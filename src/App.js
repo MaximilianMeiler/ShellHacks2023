@@ -15,6 +15,7 @@ function App() {
 
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [courseId, setCourseId] = useState(-1);
 
   const fetchCourses = async () => {
     setLoading(true);
@@ -27,8 +28,8 @@ function App() {
       console.error('Error fetching data:', error);
     }
     setLoading(false);
+    console.log(courses);
   };
-
 
   return (
     <div className="App">
@@ -49,6 +50,13 @@ function App() {
         </button>
 
         {loading ? <p>Loading...</p> : <></>}
+
+        <select onChange={(e) => console.log(e.target.selectedIndex)}>
+          {courses.map((course) => (
+            <option>{course.name}</option>
+          ))}
+        </select>
+
 
         <ul>
           {courses.map((course, index) => (
