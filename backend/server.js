@@ -78,6 +78,17 @@ app.get('/courses/', async (req, res) => {
   
 });
 
+// API endpoint to load course documents into LangChain
+app.get('/loadCourses/', async (req, res) => {
+  return res.json({ message: 'Bello' });
+});
+
+// API endpoint to chat with user
+app.get('/queryDatabase/', async (req, res) => {
+  return res.json({ message: 'Hello' });
+});
+
+
 // Start the server
 app.listen(3500, () => {
   console.log('Server running on port 3500'); // Console log to indicate server is running

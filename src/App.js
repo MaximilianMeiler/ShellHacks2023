@@ -19,6 +19,7 @@ function App() {
     }
   }, []);
 
+  // Processing canvas key input
   const submitCanvasKey = () => {
     setCanvasKey(document.getElementById("canvasKeyField").value);
     localStorage.setItem("canvasKey", document.getElementById("canvasKeyField").value)
@@ -57,7 +58,7 @@ function App() {
       // Replace with your Node.js API URL and student token
       const response = await axios.get(`http://localhost:3500/courses/`, {
         params: {
-          "key": localStorage.getItem("canvasKey")
+          "key": canvasKey
         }
       });
       console.log(response.data);
@@ -70,10 +71,8 @@ function App() {
     console.log(courses);
   };
 
+  // Processing course selection from dropdown
   const handleSelectNewCourse = async (newCurrentCourseIndex) => {
-    console.log(courses)
-    console.log(newCurrentCourseIndex)
-    console.log(courses[newCurrentCourseIndex].name)
     // Set messages to empty
     setMessages([
       {
@@ -81,25 +80,32 @@ function App() {
         sender: 'Navigator'
       }
     ]);
+
+    // Set typing indicator
+    setTyping(false);
+
     // Set course id
     setCurrentCourseIndex(newCurrentCourseIndex);
 
-    loadCourseInfo(newCurrentCourseIndex);
+    // Load course info into backend
+    loadCourseInfo(courses[newCurrentCourseIndex].id);
   };
 
-  const loadCourseInfo = async (index) => {
-    setCurrentCourseIndex(index);
-    let c = courses[index].id;
-
+  const loadCourseInfo = async (currCourseId) => {
     try {
-      await axios.get(`http://localhost:3500/courseInfo/`, { params: { "index": c } });
+      const response = await axios.get(`http://localhost:3500/loadCourses/`, {
+        params: {
+          "key": canvasKey,
+          "courseId": currCourseId
+        }
+      });
+      console.log(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  };
 
-
-  }
-
+  // Processing messages
   const handleSend = async (message) => {
     const newMessage = {
       message: message,
@@ -139,26 +145,31 @@ function App() {
       'messages': [systemMessage, ...apiMessages]
     }
 
-    // !! Fix this with a real api call !!
-    await fetch('http://localhost:3500/queryDatabase/', {
-      method: "POST",
-      apicanvasKey: localStorage.getItem("canvasKey"),
-      currentCourseIndex: currentCourseIndex,
-      body: JSON.stringify(apiRequestBody)
-    }).then((data) => {
-      return data.json()
-    }).then((data) => {
-      console.log(data);
+    try {
+      const response = await axios.get('http://localhost:3500/queryDatabase/', {
+        // method: "POST",
+        // apicanvasKey: localStorage.getItem("canvasKey"),
+        // currentCourseIndex: currentCourseIndex,
+        // body: JSON.stringify(apiRequestBody)
+      }).then((data) => {
+        console.log(data);
 
-      setMessages([...chatMessages, {
-        message: 'navigator message',
-        sender: 'NaviGator'
-      }]);
+        setMessages([...chatMessages, {
+          message: data.data.message,
+          sender: 'NaviGator'
+        }]);
 
-      setTyping(false);
-    });
+        setTyping(false);
+      });
+      console.log("Response" + response)
+      console.log("Response" + response.data)
+      console.log("Response.data" + response.data.message);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 
+  // Render app
   return (
     <div className="App" id="App" >
       <header className="AppHeader">
