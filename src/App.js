@@ -3,10 +3,9 @@ import {useEffect, useState, Link} from "react";
 import axios from "axios";
 
 
-
 function App() {
   const [key, setKey] = useState(localStorage.getItem("key") === null ? "" : localStorage.getItem("key"));
-
+  document.title = "NaviGator";
 
   const submitKey = () => {
     setKey(document.getElementById("keyField").value);
@@ -29,9 +28,9 @@ function App() {
                   window.scrollTo(0,window.innerHeight * 8/100)
                 }, 5)
               }, 4)
-            }, 3)
-          }, 2)
-        }, 3)
+            }, 2)
+          }, 1)
+        }, 2)
       }, 4)
     }, 5)
 

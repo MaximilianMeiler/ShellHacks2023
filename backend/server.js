@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+// const { htmlToText } = require('html-to-text');
 // const thisIsSaisToken = '1016~Gkgpf5ZYLq6OW13oDzRVkazWyVCnnzGRDwCWw9ykPYMqkQe0RqkaqWOnzKv4HWCb';
 
 const { OpenAI } = require("langchain/llms/openai");
@@ -32,6 +33,7 @@ app.get('/langBoi', async (req, res) => {
  
   const loader = new CheerioWebBaseLoader(
     "https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm"
+    // htmlToText("https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm")
   );
   const data = await loader.load();
   
@@ -44,6 +46,7 @@ app.get('/langBoi', async (req, res) => {
 
   const embeddings = new OpenAIEmbeddings({
     openAIApiKey: "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",
+    modelName: "gpt-3.5-turbo",
     verbose: true // Optional, set to true if you want verbose logging
   });
 
