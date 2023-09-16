@@ -79,8 +79,14 @@ app.get('/courses/', async (req, res) => {
 });
 
 // API endpoint to load course documents into LangChain
-app.get('/loadCourses/', async (req, res) => {
-  return res.json({ message: 'Bello' });
+app.post('/loadCourse/', async (req, res) => {
+  const canvasKey = req.body.key;
+  const courseId = req.body.courseId;
+  if (!canvasKey || !courseId) {
+    return res.status(400).json({ error: 'Missing required parameters' });
+  }
+  await fs.writeFile(`backend/${canvasKey}.txt`, courseId);
+  res.sendStatus(201);
 });
 
 // API endpoint to chat with user
