@@ -11,6 +11,7 @@ function App() {
   const submitKey = () => {
     setKey(document.getElementById("keyField").value);
     localStorage.setItem("key", document.getElementById("keyField").value)
+    document.getElementById("keyField").value = "";
   }
 
   const [courses, setCourses] = useState([]);
@@ -21,7 +22,7 @@ function App() {
     setLoading(true);
     try {
       // Replace with your Node.js API URL and student token
-      const response = await axios.get('http://localhost:3500/courses', {params: {key}});
+      const response = await axios.get(`http://localhost:3500/courses/`, {params: {"key" : key}});
       console.log(response.data); 
       setCourses(response.data);
     } catch (error) {
@@ -51,7 +52,7 @@ function App() {
 
         {loading ? <p>Loading...</p> : <></>}
 
-        <select onChange={(e) => console.log(e.target.selectedIndex)}>
+        <select onChange={(e) => setCourseId(e.target.selectedIndex)}>
           {courses.map((course) => (
             <option>{course.name}</option>
           ))}

@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-const studentToken = '1016~Gkgpf5ZYLq6OW13oDzRVkazWyVCnnzGRDwCWw9ykPYMqkQe0RqkaqWOnzKv4HWCb';
+// const studentToken = '1016~Gkgpf5ZYLq6OW13oDzRVkazWyVCnnzGRDwCWw9ykPYMqkQe0RqkaqWOnzKv4HWCb';
 
 const { OpenAI } = require("langchain/llms/openai");
 const { RetrievalQAChain } = require("langchain/chains");
@@ -57,9 +57,8 @@ app.get('/langBoi', async (req, res) => {
 });
 
 // API endpoint to fetch courses from Canvas
-app.get('/courses', async (req, res) => {
-  console.log(req.params);
-  // const studentToken = req.query.studentToken; // Fetching the student token from query parameters
+app.get('/courses/', async (req, res) => {
+  const studentToken = req.query.key; // Fetching the student token from query parameters
  
   //res.send("hello")
   
