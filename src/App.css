@@ -20,8 +20,8 @@
 }
 
 .bg {
-  background: rgb(253, 255, 253);
-  background: linear-gradient(333deg, rgba(200, 255, 200, 1) 0%, rgba(161, 224, 196, 1) 47%, rgba(0, 255, 222, 1) 100%);
+  /* background: rgb(253, 255, 253); */
+  /* background: linear-gradient(333deg, rgba(200, 255, 200, 1) 0%, rgba(161, 224, 196, 1) 47%, rgba(0, 255, 222, 1) 100%); */
   filter: blur(10px);
   -webkit-filter: blur(10px);
   height: 100%;
@@ -88,6 +88,7 @@
 }
 
 .canvasDisplay {
+  background: linear-gradient(333deg, rgba(200, 255, 200, 1) 0%, rgba(161, 224, 196, 1) 47%, rgba(0, 255, 222, 1) 100%);
   height: 90vh;
   color: #282c34;
   padding-top: 2vh;
@@ -97,8 +98,36 @@
 }
 
 .chatBox {
-  /* background-color: #282c34; */
   width: 60vw;
-  /* overflow-y: scroll; */
-  height: 70vh;
+  height: 75vh;
+}
+
+.cs-main-container {
+  border-color: #282c34 !important;
+  border-radius: 10px;
+}
+
+.scrollbar-container, .cs-message-input, .cs-typing-indicator {
+  background-color: #282c34 !important;
+  border-color: #282c34 !important;
+}
+
+.cs-typing-indicator__text {
+  color: rgb(173, 236, 212) !important;
+}
+
+.cs-typing-indicator__dot {
+  background-color: rgb(173, 236, 212) !important;
+}
+
+.cs-message__content {
+  background: linear-gradient(333deg, rgba(200, 255, 200, 1) 0%, rgba(161, 224, 196, 1) 47%, rgba(0, 255, 222, 1) 100%);
+  color: #282c34 !important;
+  font-family: 'Poppins' !important;
+}
+
+.cs-message-input__content-editor, .cs-message-input__content-editor-wrapper {
+  background-color: rgb(173, 236, 228) !important;
+  color: #282c34 !important;
+  font-family: 'Poppins' !important;
 }

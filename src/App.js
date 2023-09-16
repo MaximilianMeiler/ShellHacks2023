@@ -91,22 +91,22 @@ function App() {
       //   role = "assistant";
       // }
       let role = messageObject.sender === 'user' ? 'user' : 'assistant';
-      
+
       return {
         role: role,
         content: messageObject.message
       }
     });
 
-    // const systemMessage = {
-    //   role: 'system',
-    //   content: 'Your name is Navigator. Explain all concepts like I am a student in this class.'
-    // }
+    const systemMessage = {
+      role: 'system',
+      content: 'Your name is Navigator. Explain all concepts like I am a student in this class.'
+    }
 
-    // const apiRequestBody = {
-    //   'model': 'gpt-3.5-turbo',
-    //   'messages': [systemMessage, ...apiMessages]
-    // }
+    const apiRequestBody = {
+      'model': 'gpt-3.5-turbo',
+      'messages': [systemMessage, ...apiMessages]
+    }
 
     // Fix this with a real api call
     await fetch('http://localhost:3500/courses', {
@@ -130,18 +130,17 @@ function App() {
 
   return (
     <div className="App" id="App" >
-      <div className="bg"></div>
+      {/* <div className="bg"></div> */}
       <header className="AppHeader">
         <p className="keyText">
           Enter
-          <a className="keyTextLink" href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273" target="_blank" rel="noreferrer">Canvas Api Key:</a>
+          <a className="keyTextLink" href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273" target="_blank" rel="noreferrer">
+            Canvas Api Key:
+          </a>
         </p>
         <input type="text" id="keyField" className="keyField" placeholder={key}></input>
         <button className="submitKeyButton" onClick={() => submitKey()}>Submit</button>
-
       </header>
-
-
 
       <div className="canvasDisplay">
         {loading ? <p>Loading...</p> : <></>}
@@ -166,10 +165,10 @@ function App() {
                       typingIndicator={typing ? <TypingIndicator content="NaviGator is typing" /> : null}
                     >
                       {messages.map((message, i) => {
-                        return <Message key={i} model={message} />
+                        return <Message key={i} model={message} className="blue" />
                       })}
                     </MessageList>
-                    <MessageInput placeholder="Type message here" onSend={handleSend} />
+                    <MessageInput placeholder="Ask Navigator..." onSend={handleSend} attachButton={false} />
                   </ChatContainer>
                 </MainContainer>
               </div>
