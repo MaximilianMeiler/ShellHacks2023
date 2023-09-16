@@ -83,7 +83,22 @@ function App() {
     ]);
     // Set course id
     setCurrentCourseIndex(newCurrentCourseIndex);
+
+    loadCourseInfo(newCurrentCourseIndex);
   };
+
+  const loadCourseInfo = async (index) => {
+    setCourseId(index);
+    let c = courses[index].id;
+
+    try {
+      await axios.get(`http://localhost:3500/courseInfo/`, { params: { "index": c } });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
+
+  }
 
   const handleSend = async (message) => {
     const newMessage = {

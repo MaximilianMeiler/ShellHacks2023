@@ -70,6 +70,7 @@
   max-height: 3vh;
   font-family: 'Poppins';
   text-align: center;
+  margin-bottom: 1vh;
 }
 
 .canvasDisplay {
@@ -107,7 +108,7 @@
 }
 
 .cs-message__content {
-  background: linear-gradient(333deg, rgba(200, 255, 200, 1) 0%, rgba(161, 224, 196, 1) 47%, rgba(0, 255, 222, 1) 100%);
+  background: linear-gradient(333deg, rgba(0,78,255,0.2861345221682423) 0%, rgba(161,220,224,0.798739564185049) 68%, rgba(220,255,200,0.7903362028405112) 91%);
   color: #282c34 !important;
   font-family: 'Poppins' !important;
 }
@@ -117,3 +118,4 @@
   color: #282c34 !important;
   font-family: 'Poppins' !important;
 }
+
