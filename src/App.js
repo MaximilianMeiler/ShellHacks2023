@@ -72,28 +72,27 @@ function App() {
 
       <div className="canvasDisplay">
         {loading ? <p>Loading...</p> : <></>}
-
         {courses.length > 0 ? 
-        <div>
+        <div className='canvasDisplay'>
           <h1>Canvas Courses</h1>
-          <select onChange={(e) => setCourseId(e.target.selectedIndex)}>
+          <select className="classDropdown" onChange={(e) => setCourseId(e.target.selectedIndex)}>
             {courses.map((course) => (
               <option>{course.name}</option>
             ))}
           </select>
+
+
+          {courseId >= 0 ? 
+          <div className='chatBox'>
+            {courses[courseId].name}
+            <div dangerouslySetInnerHTML={{ __html: courses[courseId].syllabus_body || 'No syllabus available' }} />
+          </div>
+
+          : <></>}
         </div>
         : <h1>No courses found!</h1>
         }
 
-
-        {courseId >= 0 ? 
-        <ul>
-          <li key={courseId}>
-          {courses[courseId].name}
-          <div dangerouslySetInnerHTML={{ __html: courses[courseId].syllabus_body || 'No syllabus available' }} />
-          </li>
-        </ul>
-        : <></>}
       </div>
     </div>
   );
