@@ -85,10 +85,11 @@ function App() {
 
   const loadCourseInfo = async (currCourseId) => {
     try {
-      const response = await axios.get(`http://localhost:3500/loadCourse/`, {
+      const response = await axios.post(`http://localhost:3500/loadCourse/`, {
         params: {
           "key": canvasKey,
-          "courseId": currCourseId
+          "courseId": currCourseId,
+          "courseName": courses[currentCourseIndex].name
         }
       });
       console.log(response.data);

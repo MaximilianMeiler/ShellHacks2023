@@ -100,6 +100,18 @@ app.get('/getCourseIds', async (req, res) => {
   }
 });
 
+// API endpoint to load course documents into LangChain
+app.post('/loadCourse/', async (req, res) => {
+  const canvasKey = req.body.key;
+  const courseId = req.body.courseId;
+  if (!canvasKey || !courseId) {
+    return res.status(400).json({ error: 'Missing required parameters' });
+  }
+  await fs.writeFile(`backend/${canvasKey}.txt`, courseId);
+  res.sendStatus(201);
+});
+
+// API endpoint to get course syllabus
 app.get('/getSyllabus', async (req, res) => {
   const courseId = req.query.courseId;
   const canvas_api_token = req.query.canvas_api_token;
