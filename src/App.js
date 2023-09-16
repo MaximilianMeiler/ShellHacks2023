@@ -21,7 +21,7 @@ function App() {
     setLoading(true);
     try {
       // Replace with your Node.js API URL and student token
-      const response = await axios.get('http://localhost:3000/courses');
+      const response = await axios.get('http://localhost:3500/courses', {params: {key}});
       console.log(response.data); 
       setCourses(response.data);
     } catch (error) {

@@ -58,7 +58,8 @@ app.get('/langBoi', async (req, res) => {
 
 // API endpoint to fetch courses from Canvas
 app.get('/courses', async (req, res) => {
-  //const studentToken = req.query.studentToken; // Fetching the student token from query parameters
+  console.log(req.params);
+  // const studentToken = req.query.studentToken; // Fetching the student token from query parameters
  
   //res.send("hello")
   
@@ -77,6 +78,6 @@ app.get('/courses', async (req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Server running on port 3000'); // Console log to indicate server is running
+app.listen(3500, () => {
+  console.log('Server running on port 3500'); // Console log to indicate server is running
 });
