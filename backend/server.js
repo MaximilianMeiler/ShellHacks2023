@@ -9,6 +9,7 @@ const app = express();
 //syllabus, modules, pages, files
 // const thisIsSaisToken = 'Bearer 1016~Gkgpf5ZYLq6OW13oDzRVkazWyVCnnzGRDwCWw9ykPYMqkQe0RqkaqWOnzKv4HWCb';
 
+const { JSONLoader } = require("langchain/document_loaders/fs/json");
 const { OpenAI } = require("langchain/llms/openai");
 const { RetrievalQAChain } = require("langchain/chains");
 const { HNSWLib } = require("langchain/vectorstores/hnswlib");
@@ -19,7 +20,7 @@ const { MemoryVectorStore } = require("langchain/vectorstores/memory");
 
 // 1. Import document loaders for different file formats
 const { DirectoryLoader } = require("langchain/document_loaders/fs/directory");
-const { JSONLoader } = require("langchain/document_loaders/fs/json");
+//const { JSONLoader } = require("langchain/document_loaders/fs/json");
 const { TextLoader } = require("langchain/document_loaders/fs/text");
 const { CSVLoader } = require("langchain/document_loaders/fs/csv");
 const { PDFLoader } = require("langchain/document_loaders/fs/pdf");
@@ -31,7 +32,12 @@ const loader = new DirectoryLoader("./documents", {
   ".txt": (path) => new TextLoader(path),
   ".csv": (path) => new CSVLoader(path),
   ".pdf": (path) => new PDFLoader(path),
+  ".html": (path) => new UnstructuredLoader(path),
+  ".pptx": (path) => new UnstructuredLoader(path)
 });
+
+let vectorStore;
+
 const CANVAS_API_URL = 'https://canvas.instructure.com/api/v1';
 app.use(cors());
 
@@ -53,6 +59,17 @@ app.use(cors());
 */
 
 
+// 8. Define a function to normalize the content of the documents
+function normalizeDocuments(docs) {
+  return docs.map((doc) => {
+    if (typeof doc.pageContent === "string") {
+      return doc.pageContent;
+    } else if (Array.isArray(doc.pageContent)) {
+      return doc.pageContent.join("\n");
+    }
+  });
+}
+
 // API to get module data for a specific course.
 app.get('/getModuleData', async (req, res) => {
   const { course_id, canvas_api_token } = req.query; // Extract parameters from the query.
@@ -61,7 +78,6 @@ app.get('/getModuleData', async (req, res) => {
     return res.status(400).json({ error: 'course_id and canvas_api_token are required' });
   }
 
-  //console.log(`https://canvas.instructure.com/api/v1/courses/${course_id}/modules?include[]=items`);
   try {
     const response = await axios.get(`https://canvas.instructure.com/api/v1/courses/${course_id}/modules?include[]=items`, {
       headers: {
@@ -122,29 +138,71 @@ app.get('/getSyllabus', async (req, res) => {
   }
 }); 
 
-// API to get module data for a specific course.
-app.get('/getModuleData', async (req, res) => {
-  const { course_id, canvas_api_token } = req.query; // Extract parameters from the query.
+app.get('/createDatabase', async (req, res) => {
+  const { course_id, canvas_api_token } = req.query;
 
   if (!course_id || !canvas_api_token) {
     return res.status(400).json({ error: 'course_id and canvas_api_token are required' });
   }
 
   try {
-    const response = await axios.get(`https://your-canvas-instance/api/v1/courses/${course_id}/modules?include[]=items`, {
-      headers: {
-        Authorization: `Bearer ${canvas_api_token}`
-      }
+
+    const [syllabus, modules] = await Promise.all([
+      axios.get("http://localhost:3500/getSyllabus"),
+      axios.get("http://localhost:3500/getModuleData"),
+    ]);
+
+    console.log(syllabus);
+    console.log(modules);
+    /*
+    const syllabusJsonString = JSON.stringify(syllabus, null, 2);
+    const modulesJsonString = JSON.stringify(modules,null,2); 
+
+    const directoryPath = path.join(__dirname, `coursesData/${course_id}`);
+
+    const syllabusFilePath = path.join(directoryPath, 'syllabus.json');
+    const modulesFilePath = path.join(directoryPath, 'modules.json');
+    
+    // Make sure the directory exists, and if not, create it
+    if (!fs.existsSync(directoryPath)){
+      fs.mkdirSync(directoryPath, { recursive: true });
+    }
+
+    // Write the JSON string to a file
+    fs.writeFileSync(syllabusFilePath, syllabusJsonString);
+    fs.writeFileSync(modulesFilePath, modulesJsonString);
+
+    const docs = await loader.load();
+
+    const VECTOR_STORE_PATH = directoryPath;
+
+    const textSplitter = new RecursiveCharacterTextSplitter({
+      chunkSize: 1000,
     });
 
-    res.status(200).json(response.data);
-  } catch (error) {
-    console.error(`Error fetching modules: ${error}`);
-    res.status(500).json({ error: 'Failed to fetch modules' });
+    const normalizedDocs = normalizeDocuments(docs);
+    const splitDocs = await textSplitter.createDocuments(normalizedDocs);
+
+    vectorStore = await HNSWLib.fromDocuments(
+      splitDocs,
+      new OpenAIEmbeddings({openAIApiKey: "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",
+      verbose: true // Optional, set to true if you want verbose logging)
+  }));
+
+
+   // have to fix the "error" start
+    */
+  } 
+  catch (error) {
+    console.error(`Error creating database: ${error}`);
+    res.status(500).json({ error: 'Failed to create database' });
   }
 });
+
+
+
 // need to make an api
-//   -> "/getSyllabus public description"
+//   -> "/getSyllabus   public description"
 //   -> "/getSyllabus (req,res) (Done)"
 //        -> given courseID
 //        -> return html 
