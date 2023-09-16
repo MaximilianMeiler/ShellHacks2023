@@ -89,7 +89,7 @@ function App() {
         params: {
           "key": canvasKey,
           "courseId": currCourseId,
-          "courseName": courses[currentCourseIndex].name
+          "courseName": ids.courseNames[currentCourseIndex]
         }
       });
       console.log(response.data);
