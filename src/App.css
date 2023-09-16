@@ -13,23 +13,9 @@
   padding: 0;
 }
 
-
 .App {
   text-align: center;
   font-family: Poppins;
-}
-
-.bg {
-  /* background: rgb(253, 255, 253); */
-  /* background: linear-gradient(333deg, rgba(200, 255, 200, 1) 0%, rgba(161, 224, 196, 1) 47%, rgba(0, 255, 222, 1) 100%); */
-  filter: blur(10px);
-  -webkit-filter: blur(10px);
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -5;
 }
 
 .AppHeader {
@@ -42,7 +28,6 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
 
 .keyText,
 .keyTextLink {

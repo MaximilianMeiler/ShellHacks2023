@@ -117,13 +117,9 @@ function App() {
     }
 
     // Fix this with a real api call
-    await fetch('http://localhost:3500/courses', {
-      // method: 'POST',
-      // headers: {
-      //   'Authorizaiton': 'Bearer ' + key,
-      //   'Content-Type': 'application/json'
-      // },
-      // body: JSON.stringify(apiRequestBody)
+    await fetch('http://localhost:3500/queryDatabase/', {
+      apiKey: localStorage.getItem("key"),
+      courseId: courseId
     }).then((data) => {
       return data.json()
     }).then((data) => {
@@ -138,7 +134,6 @@ function App() {
 
   return (
     <div className="App" id="App" >
-      {/* <div className="bg"></div> */}
       <header className="AppHeader">
         <p className="keyText">
           Enter

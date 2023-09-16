@@ -41,7 +41,7 @@ app.get('/langBoi', async (req, res) => {
     chunkOverlap: 0,
   });
   
-  const splitDocs = await textSplitter.splitDocuments(data);
+const splitDocs = await textSplitter.splitDocuments(data);
 
   const embeddings = new OpenAIEmbeddings({
     openAIApiKey: "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",
