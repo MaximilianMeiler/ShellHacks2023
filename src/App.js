@@ -1,22 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import {useEffect, useState} from "react";
+
+
 
 function App() {
+  const [key, setKey] = useState(localStorage.getItem("key") === null ? "" : localStorage.getItem("key"));
+
+
+  const submitKey = () => {
+    setKey(document.getElementById("keyField").value);
+    localStorage.setItem("key", document.getElementById("keyField").value)
+  }
+
+
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+        <p className="keyText">
+          Enter Canvas API key:
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <input type="text" id="keyField" placeholder={key}></input>
+        <button className="submitKeyButton" onClick={() => submitKey()}>Submit</button>
+
       </header>
     </div>
   );
