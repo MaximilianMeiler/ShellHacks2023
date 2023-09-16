@@ -27,6 +27,10 @@ const app = express();
 // Middleware for handling CORS issues
 app.use(cors());
 
+
+
+
+//app.get('/ query')
 app.get('/langBoi', async (req, res) => {
   //const studentToken = req.query.studentToken; // Fetching the student token from query parameters
  
@@ -58,16 +62,19 @@ app.get('/langBoi', async (req, res) => {
 
 // API endpoint to fetch courses from Canvas
 app.get('/courses', async (req, res) => {
-  //const studentToken = req.query.studentToken; // Fetching the student token from query parameters
- 
-  //res.send("hello")
+  //studentToken = req.query.studentToken; // Fetching the student token from query parameters
+  //console.log(studentToken);
+  //res.send(studentToken);
   
   try {
+    console.log(studentToken);
     const response = await axios.get('https://canvas.instructure.com/api/v1/courses?include[]=syllabus_body', {
       headers: {
         Authorization: `Bearer ${studentToken}`, // Using the student token to authenticate API request
       },
     });
+
+    
     return res.json(response.data); // Return fetched courses data
   } catch (error) {
     console.error('Error fetching courses:', error); // Log any errors
