@@ -88,7 +88,7 @@ function App() {
   };
 
   const loadCourseInfo = async (index) => {
-    setCourseId(index);
+    setCurrentCourseIndex(index);
     let c = courses[index].id;
 
     try {
