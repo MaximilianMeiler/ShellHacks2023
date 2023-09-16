@@ -60,7 +60,7 @@ function App() {
     setLoading(true);
     try {
       // Replace with your Node.js API URL and student token
-      const response = await axios.get(`http://localhost:3500/courses/`, { params: { "key": localStorage.getItem("key") } });
+      const response = await axios.get(`http://localhost:3500/courses/`, { params: { "key": localStorage.getItem("key")} });
       console.log(response.data);
       setCourses(response.data);
     } catch (error) {
@@ -69,6 +69,20 @@ function App() {
     setLoading(false);
     console.log(courses);
   };
+
+
+const loadCourseInfo = async (index) => {
+    setCourseId(index);
+    let c = courses[index].id;
+
+    try {
+      await axios.get(`http://localhost:3500/courseInfo/`, { params: { "index": c} });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
+
+}
 
   const handleSend = async (message) => {
     const newMessage = {
@@ -155,7 +169,7 @@ function App() {
         {courses.length > 0 ?
           <div>
             <h1>Canvas Courses</h1>
-            <select className="classDropdown" onChange={(e) => setCourseId(e.target.selectedIndex)}>
+            <select className="classDropdown" onChange={(e) => loadCourseInfo(e.target.selectedIndex)}>
               {courses.map((course) => (
                 <option>{course.name}</option>
               ))}
