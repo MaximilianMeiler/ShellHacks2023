@@ -103,17 +103,10 @@ const loadCourseInfo = async (index) => {
     await processMessage(newMessages);
   };
 
-  // !!! This needs to be fixed !!!
   async function processMessage(chatMessages) {
-    let apiMessages = chatMessages.map((messageObject) => {
-      // let role = "";
-      // if(messageObject.sender === "user") {
-      //   role = "user";
-      // } else {
-      //   role = "assistant";
-      // }
-      let role = messageObject.sender === 'user' ? 'user' : 'assistant';
 
+    let apiMessages = chatMessages.map((messageObject) => {
+      let role = messageObject.sender === 'user' ? 'user' : 'assistant';
       return {
         role: role,
         content: messageObject.message
@@ -130,29 +123,28 @@ const loadCourseInfo = async (index) => {
       'messages': [systemMessage, ...apiMessages]
     }
 
-    // Fix this with a real api call
-    await fetch('http://localhost:3500/courses', {
-      // method: 'POST',
-      // headers: {
-      //   'Authorizaiton': 'Bearer ' + key,
-      //   'Content-Type': 'application/json'
-      // },
-      // body: JSON.stringify(apiRequestBody)
+    // !! Fix this with a real api call !!
+    await fetch('http://localhost:3500/queryDatabase/', {
+      method: "POST",
+      apiKey: localStorage.getItem("key"),
+      courseId: courseId,
+      body: JSON.stringify(apiRequestBody)
     }).then((data) => {
       return data.json()
     }).then((data) => {
       console.log(data);
+
       setMessages([...chatMessages, {
         message: 'navigator message',
         sender: 'NaviGator'
       }]);
+
       setTyping(false);
     });
   }
 
   return (
     <div className="App" id="App" >
-      {/* <div className="bg"></div> */}
       <header className="AppHeader">
         <p className="keyText">
           Enter
