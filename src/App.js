@@ -89,17 +89,10 @@ function App() {
     await processMessage(newMessages);
   };
 
-  // !!! This needs to be fixed !!!
   async function processMessage(chatMessages) {
-    let apiMessages = chatMessages.map((messageObject) => {
-      // let role = "";
-      // if(messageObject.sender === "user") {
-      //   role = "user";
-      // } else {
-      //   role = "assistant";
-      // }
-      let role = messageObject.sender === 'user' ? 'user' : 'assistant';
 
+    let apiMessages = chatMessages.map((messageObject) => {
+      let role = messageObject.sender === 'user' ? 'user' : 'assistant';
       return {
         role: role,
         content: messageObject.message
@@ -116,18 +109,22 @@ function App() {
       'messages': [systemMessage, ...apiMessages]
     }
 
-    // Fix this with a real api call
+    // !! Fix this with a real api call !!
     await fetch('http://localhost:3500/queryDatabase/', {
+      method: "POST",
       apiKey: localStorage.getItem("key"),
-      courseId: courseId
+      courseId: courseId,
+      body: JSON.stringify(apiRequestBody)
     }).then((data) => {
       return data.json()
     }).then((data) => {
       console.log(data);
+
       setMessages([...chatMessages, {
         message: 'navigator message',
         sender: 'NaviGator'
       }]);
+
       setTyping(false);
     });
   }
