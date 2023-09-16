@@ -12,11 +12,35 @@ function App() {
     setKey(document.getElementById("keyField").value);
     localStorage.setItem("key", document.getElementById("keyField").value)
     document.getElementById("keyField").value = "";
+    window.scrollTo(0,window.innerHeight * 1/100)   // this is an offense against god
+    setTimeout(() => {
+      window.scrollTo(0,window.innerHeight * 2/100)
+      setTimeout(() => {
+        window.scrollTo(0,window.innerHeight * 3/100)
+        setTimeout(() => {
+          window.scrollTo(0,window.innerHeight * 4/100)
+          setTimeout(() => {
+            window.scrollTo(0,window.innerHeight * 5/100)
+            setTimeout(() => {
+              window.scrollTo(0,window.innerHeight * 6/100)
+              setTimeout(() => {
+                window.scrollTo(0,window.innerHeight * 7/100)
+                setTimeout(() => {
+                  window.scrollTo(0,window.innerHeight * 8/100)
+                }, 5)
+              }, 4)
+            }, 3)
+          }, 2)
+        }, 3)
+      }, 4)
+    }, 5)
+
+    fetchCourses();
   }
 
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [courseId, setCourseId] = useState(-1);
+  const [courseId, setCourseId] = useState();
 
   const fetchCourses = async () => {
     setLoading(true);
@@ -33,8 +57,8 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="App" id="App">
+      <header className="AppHeader">
         <p className="keyText">
           Enter Canvas API key:
         </p>
@@ -44,11 +68,11 @@ function App() {
       </header>
 
 
-      <div>
+      <div className="canvasDisplay">
         <h1>Canvas Courses</h1>
-        <button onClick={fetchCourses}>
+        {/* <button onClick={fetchCourses}>
           Fetch Courses
-        </button>
+        </button> */}
 
         {loading ? <p>Loading...</p> : <></>}
 
@@ -58,15 +82,14 @@ function App() {
           ))}
         </select>
 
-
+        {courseId >= 0 ? 
         <ul>
-          {courses.map((course, index) => (
-            <li key={index}>
-            {course.name}
-            <div dangerouslySetInnerHTML={{ __html: course.syllabus_body || 'No syllabus available' }} />
-            </li>
-          ))}
+          <li key={courseId}>
+          {courses[courseId].name}
+          <div dangerouslySetInnerHTML={{ __html: courses[courseId].syllabus_body || 'No syllabus available' }} />
+          </li>
         </ul>
+        : <></>}
       </div>
     </div>
   );

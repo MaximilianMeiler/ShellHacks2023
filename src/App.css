@@ -1,13 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
 .App {
   text-align: center;
 }
 
 
-.App-header {
+.AppHeader {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 8vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -21,4 +27,9 @@
 
 .submitKeyButton {
     margin-top: 10px;
+}
+
+.canvasDisplay {
+    background-color: lightblue;
+    height: 100vh;
 }
