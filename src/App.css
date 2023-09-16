@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: local('Montserrat'), url(../public/fonts/Montserrat/Montserrat-VariableFont_wght.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: local('Poppins'), url(../public/fonts/Poppins/Poppins-Medium.ttf) format('truetype');
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,12 +16,25 @@
 
 .App {
   text-align: center;
+  font-family: Poppins;
 }
 
+.bg {
+  background: rgb(253, 255, 253);
+  background: linear-gradient(333deg, rgba(200, 255, 200, 1) 0%, rgba(161, 224, 196, 1) 47%, rgba(0, 255, 222, 1) 100%);
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -5;
+}
 
 .AppHeader {
   background-color: #282c34;
-  min-height: 8vh;
+  height: 8vh;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -21,15 +44,61 @@
 }
 
 
-.keyText {
-  color: red;
+.keyText,
+.keyTextLink {
+  color: rgba(0, 255, 222, 1);
+  padding-bottom: .5vh;
+}
+
+.keyTextLink {
+  padding-left: 8px;
+  padding-right: 2vw;
+}
+
+.keyField {
+  background-color: rgb(173, 236, 228);
+  border-width: 0px;
+  height: 3vh;
+  width: 60vw;
+  border-radius: 1vh;
+  max-height: 3vh;
+  padding-left: .5vw;
 }
 
 .submitKeyButton {
-    margin-top: 10px;
+  margin-left: 1vw;
+  width: 10vw;
+  height: 3vh;
+  background-color: rgb(173, 236, 212);
+  border-width: 0px;
+  border-radius: 1vh;
+  color: #282c34;
+  font-family: 'Poppins';
+}
+
+.classDropdown {
+  background-color: rgb(173, 236, 228);
+  border-width: 0px;
+  height: 3vh;
+  width: 60vw;
+  border-radius: 1vh;
+  max-height: 3vh;
+  font-family: 'Poppins';
+  text-align: center;
 }
 
 .canvasDisplay {
-    background-color: lightblue;
-    height: 100vh;
+  height: 98vh;
+  color: #282c34;
+  padding-top: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chatBox {
+  /* background-color: #282c34; */
+  width: 60vw;
+  /* overflow-y: scroll; */
+  height: 70vh;
 }
