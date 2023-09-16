@@ -1,5 +1,5 @@
 import './App.css';
-import {useEffect, useState} from "react";
+import {useEffect, useState, Link} from "react";
 import axios from "axios";
 
 
@@ -57,13 +57,14 @@ function App() {
   };
 
   return (
-    <div className="App" id="App">
+    <div className="App" id="App" >
       <div className="bg"></div>
       <header className="AppHeader">
         <p className="keyText">
-          Enter Canvas API key:
+          Enter 
+          <a className="keyTextLink" href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273" target="_blank" rel="noreferrer">Canvas Api Key:</a>
         </p>
-        <input type="text" id="keyField" placeholder={key}></input>
+        <input type="text" id="keyField" className="keyField" placeholder={key}></input>
         <button className="submitKeyButton" onClick={() => submitKey()}>Submit</button>
 
       </header>

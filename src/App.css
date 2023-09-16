@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: local('Montserrat'),url(../public/fonts/Montserrat/Montserrat-VariableFont_wght.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: local('Poppins'),url(../public/fonts/Poppins/Poppins-Medium.ttf) format('truetype');
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,6 +16,7 @@
 
 .App {
   text-align: center;
+  font-family: Poppins;
 }
 
 .bg {
@@ -29,18 +40,44 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: white; 
+  max-height: 8vh;
 }
 
 
-.keyText {
-  color: red;
+.keyText, .keyTextLink {
+  color: rgba(0,255,222,1);
+  padding-bottom: .5vh;
+}
+
+.keyTextLink {
+  padding-left: 8px;
+  padding-right: 2vw;
+}
+
+.keyField {
+  background-color: rgb(173, 236, 228);
+  border-width: 0px;
+  height: 3vh;
+  width: 60vw;
+  border-radius: 1vh;
+  max-height: 3vh;
+  padding-left: .5vw;
 }
 
 .submitKeyButton {
-    margin-top: 10px;
+    margin-left: 1vw;
+    width: 10vw;
+    height: 3vh;
+    background-color: rgb(173, 236, 212);
+    border-width: 0px;
+    border-radius: 1vh;
+    color: #282c34;
+    font-family: 'Poppins';
 }
 
 .canvasDisplay { 
     height: 100vh;
+    color: #282c34;
+    padding-top: 2vh;
 }
