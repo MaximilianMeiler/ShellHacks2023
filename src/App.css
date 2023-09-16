@@ -34,14 +34,13 @@
 
 .AppHeader {
   background-color: #282c34;
-  min-height: 8vh;
+  height: 8vh;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white; 
-  max-height: 8vh;
 }
 
 
@@ -86,7 +85,7 @@
 }
 
 .canvasDisplay { 
-    height: 100vh;
+    height: 90vh;
     color: #282c34;
     padding-top: 2vh;
     display: flex;
