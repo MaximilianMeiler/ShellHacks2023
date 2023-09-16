@@ -151,72 +151,28 @@ app.get('/getSyllabus', async (req, res) => {
   }
 }); 
 
-<<<<<<< HEAD
-app.get('/createDatabase', async (req, res) => {
-  const { course_id, canvas_api_token } = req.query;
+app.get('/getFiles', async (req, res) => {
+  const courseId = req.query.courseId;
+  const canvas_api_token = req.query.canvas_api_token;
 
-  if (!course_id || !canvas_api_token) {
-    return res.status(400).json({ error: 'course_id and canvas_api_token are required' });
+  if (!courseId || !canvas_api_token) {
+    return res.status(400).json({ error: 'courseId and canvas_api_token are required' });
   }
 
   try {
-
-    const [syllabus, modules] = await Promise.all([
-      axios.get("http://localhost:3500/getSyllabus"),
-      axios.get("http://localhost:3500/getModuleData"),
-    ]);
-
-    console.log(syllabus);
-    console.log(modules);
-    /*
-    const syllabusJsonString = JSON.stringify(syllabus, null, 2);
-    const modulesJsonString = JSON.stringify(modules,null,2); 
-
-    const directoryPath = path.join(__dirname, `coursesData/${course_id}`);
-
-    const syllabusFilePath = path.join(directoryPath, 'syllabus.json');
-    const modulesFilePath = path.join(directoryPath, 'modules.json');
-    
-    // Make sure the directory exists, and if not, create it
-    if (!fs.existsSync(directoryPath)){
-      fs.mkdirSync(directoryPath, { recursive: true });
-    }
-
-    // Write the JSON string to a file
-    fs.writeFileSync(syllabusFilePath, syllabusJsonString);
-    fs.writeFileSync(modulesFilePath, modulesJsonString);
-
-    const docs = await loader.load();
-
-    const VECTOR_STORE_PATH = directoryPath;
-
-    const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 1000,
+    const response = await axios.get(`${CANVAS_API_URL}/courses/${courseId}/files`, {
+      headers: {
+        'Authorization': `Bearer ${canvas_api_token}`
+      }
     });
-
-    const normalizedDocs = normalizeDocuments(docs);
-    const splitDocs = await textSplitter.createDocuments(normalizedDocs);
-
-    vectorStore = await HNSWLib.fromDocuments(
-      splitDocs,
-      new OpenAIEmbeddings({openAIApiKey: "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",
-      verbose: true // Optional, set to true if you want verbose logging)
-  }));
-
-
-   // have to fix the "error" start
-    */
-  } 
-  catch (error) {
-    console.error(`Error creating database: ${error}`);
-    res.status(500).json({ error: 'Failed to create database' });
+    const urls = response.data.map(file => file.url);
+    return res.json({ urls });
+  } catch (error) {
+    console.error('Error fetching files:', error);
+    res.status(200).json({ message: "No files available" });
   }
-});
+}); 
 
-
-
-=======
->>>>>>> c1b8e121f27cf498cce40a139056fce16e3f3937
 // need to make an api
 //   -> "/getSyllabus   public description"
 //   -> "/getSyllabus (req,res) (Done)"
