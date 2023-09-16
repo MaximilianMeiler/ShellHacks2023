@@ -18,10 +18,22 @@ function App() {
   ]);
   const [typing, setTyping] = useState(false);
 
+  useEffect(() => {
+    if (localStorage.getItem("key").length > 0) {
+      fetchCourses();
+    }
+  }, []);
+
+
   const submitKey = () => {
     setKey(document.getElementById("keyField").value);
     localStorage.setItem("key", document.getElementById("keyField").value)
     document.getElementById("keyField").value = "";
+
+    fetchCourses();
+  }
+
+  const fetchCourses = async () => {
     window.scrollTo(0, window.innerHeight * 1 / 100)   // this is an offense against god
     setTimeout(() => {
       window.scrollTo(0, window.innerHeight * 2 / 100)
@@ -45,14 +57,10 @@ function App() {
       }, 4)
     }, 5)
 
-    fetchCourses();
-  }
-
-  const fetchCourses = async () => {
     setLoading(true);
     try {
       // Replace with your Node.js API URL and student token
-      const response = await axios.get(`http://localhost:3500/courses/`, { params: { "key": key } });
+      const response = await axios.get(`http://localhost:3500/courses/`, { params: { "key": localStorage.getItem("key") } });
       console.log(response.data);
       setCourses(response.data);
     } catch (error) {
@@ -159,7 +167,7 @@ function App() {
               <div className='chatBox'>
                 {/* {courses[courseId].name} */}
                 {/* <div dangerouslySetInnerHTML={{ __html: courses[courseId].syllabus_body || 'No syllabus available' }} /> */}
-                <MainContainer>
+                <MainContainer >
                   <ChatContainer>
                     <MessageList
                       scrollBehavor='smooth'
