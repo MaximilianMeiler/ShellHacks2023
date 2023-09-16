@@ -18,6 +18,19 @@
   font-family: Poppins;
 }
 
+.bg {
+  background: rgb(253, 255, 253);
+  background: linear-gradient(333deg, rgba(200,255,200,1) 0%, rgba(161,224,196,1) 47%, rgba(0,255,222,1) 100%); 
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+  height:100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -5;
+}
+
 .AppHeader {
   background-color: #282c34;
   height: 8vh;
@@ -73,15 +86,16 @@
   margin-bottom: 1vh;
 }
 
-.canvasDisplay {
-  background: linear-gradient(333deg, rgba(200, 255, 200, 1) 0%, rgba(161, 224, 196, 1) 47%, rgba(0, 255, 222, 1) 100%);
+.canvasDisplay { 
   height: 98vh;
   color: #282c34;
   padding-top: 2vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: rbga(0,0,0,0);
 }
+
 
 .chatBox {
   padding-top: 2vh;
