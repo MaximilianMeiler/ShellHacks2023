@@ -58,6 +58,7 @@ function App() {
 
   return (
     <div className="App" id="App">
+      <div className="bg"></div>
       <header className="AppHeader">
         <p className="keyText">
           Enter Canvas API key:
@@ -68,19 +69,22 @@ function App() {
       </header>
 
 
-      <div className="canvasDisplay">
-        <h1>Canvas Courses</h1>
-        {/* <button onClick={fetchCourses}>
-          Fetch Courses
-        </button> */}
 
+      <div className="canvasDisplay">
         {loading ? <p>Loading...</p> : <></>}
 
-        <select onChange={(e) => setCourseId(e.target.selectedIndex)}>
-          {courses.map((course) => (
-            <option>{course.name}</option>
-          ))}
-        </select>
+        {courses.length > 0 ? 
+        <div>
+          <h1>Canvas Courses</h1>
+          <select onChange={(e) => setCourseId(e.target.selectedIndex)}>
+            {courses.map((course) => (
+              <option>{course.name}</option>
+            ))}
+          </select>
+        </div>
+        : <h1>No courses found!</h1>
+        }
+
 
         {courseId >= 0 ? 
         <ul>
