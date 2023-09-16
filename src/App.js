@@ -24,7 +24,10 @@ function App() {
     setCanvasKey(document.getElementById("canvasKeyField").value);
     localStorage.setItem("canvasKey", document.getElementById("canvasKeyField").value)
     document.getElementById("canvasKeyField").value = "";
+    fetchCourses();
+  }
 
+  const fetchCourses = async () => {
     window.scrollTo(0, window.innerHeight * 1 / 100)   // this is an offense against god
     setTimeout(() => {
       window.scrollTo(0, window.innerHeight * 2 / 100)
@@ -47,26 +50,15 @@ function App() {
         }, 2)
       }, 4)
     }, 5)
-
-    fetchCourses();
-  }
-
-  const fetchCourses = async () => {
     setLoading(true);
-
     try {
       // Replace with your Node.js API URL and student token
-      const response = await axios.get(`http://localhost:3500/courses/`, {
-        params: {
-          "key": canvasKey
-        }
-      });
+      const response = await axios.get(`http://localhost:3500/courses/`, { params: { "key": localStorage.getItem("canvasKey")} });
       console.log(response.data);
       setCourses(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-
     setLoading(false);
     console.log(courses);
   };
@@ -173,6 +165,7 @@ function App() {
   // Render app
   return (
     <div className="App" id="App" >
+      <div className="bg"></div>
       <header className="AppHeader">
         <p className="canvasKeyText">
           Enter
