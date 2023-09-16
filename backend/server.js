@@ -90,8 +90,9 @@ app.get('/getCourseIds', async (req, res) => {
       }
     });
 
+    const courseNames = response.data.map(course => course.name);
     const courseIds = response.data.map(course => course.id);
-    return res.json({ courseIds });
+    return res.json({ courseNames, courseIds });
 
   } catch (error) {
     console.error('Error fetching course IDs:', error);
@@ -122,27 +123,6 @@ app.get('/getSyllabus', async (req, res) => {
   }
 }); 
 
-// API to get module data for a specific course.
-app.get('/getModuleData', async (req, res) => {
-  const { course_id, canvas_api_token } = req.query; // Extract parameters from the query.
-
-  if (!course_id || !canvas_api_token) {
-    return res.status(400).json({ error: 'course_id and canvas_api_token are required' });
-  }
-
-  try {
-    const response = await axios.get(`https://your-canvas-instance/api/v1/courses/${course_id}/modules?include[]=items`, {
-      headers: {
-        Authorization: `Bearer ${canvas_api_token}`
-      }
-    });
-
-    res.status(200).json(response.data);
-  } catch (error) {
-    console.error(`Error fetching modules: ${error}`);
-    res.status(500).json({ error: 'Failed to fetch modules' });
-  }
-});
 // need to make an api
 //   -> "/getSyllabus public description"
 //   -> "/getSyllabus (req,res) (Done)"
