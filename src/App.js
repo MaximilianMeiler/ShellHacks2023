@@ -6,30 +6,24 @@ import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Typin
 
 function App() {
   document.title = "NaviGator";
-  const [key, setKey] = useState(localStorage.getItem("key") === null ? "" : localStorage.getItem("key"));
+  const [canvasKey, setCanvasKey] = useState(localStorage.getItem("canvasKey") === null ? "" : localStorage.getItem("canvasKey"));
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [courseId, setCourseId] = useState();
-  const [messages, setMessages] = useState([
-    {
-      message: 'Hello, how can I help you?',
-      sender: 'Navigator'
-    }
-  ]);
+  const [currentCourseIndex, setCurrentCourseIndex] = useState();
+  const [messages, setMessages] = useState([]);
   const [typing, setTyping] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("key").length > 0) {
+    if (localStorage.getItem("canvasKey") && localStorage.getItem("canvasKey").length > 0) {
       fetchCourses();
     }
   }, []);
 
-
-  const submitKey = () => {
-    setKey(document.getElementById("keyField").value);
-    localStorage.setItem("key", document.getElementById("keyField").value)
-    document.getElementById("keyField").value = "";
-
+  // Processing canvas key input
+  const submitCanvasKey = () => {
+    setCanvasKey(document.getElementById("canvasKeyField").value);
+    localStorage.setItem("canvasKey", document.getElementById("canvasKeyField").value)
+    document.getElementById("canvasKeyField").value = "";
     fetchCourses();
   }
 
@@ -56,11 +50,10 @@ function App() {
         }, 2)
       }, 4)
     }, 5)
-
     setLoading(true);
     try {
       // Replace with your Node.js API URL and student token
-      const response = await axios.get(`http://localhost:3500/courses/`, { params: { "key": localStorage.getItem("key") } });
+      const response = await axios.get(`http://localhost:3500/courses/`, { params: { "key": localStorage.getItem("canvasKey")} });
       console.log(response.data);
       setCourses(response.data);
     } catch (error) {
@@ -70,6 +63,41 @@ function App() {
     console.log(courses);
   };
 
+  // Processing course selection from dropdown
+  const handleSelectNewCourse = async (newCurrentCourseIndex) => {
+    // Set messages to empty
+    setMessages([
+      {
+        message: 'Hello, how can I help you?',
+        sender: 'Navigator'
+      }
+    ]);
+
+    // Set typing indicator
+    setTyping(false);
+
+    // Set course id
+    setCurrentCourseIndex(newCurrentCourseIndex);
+
+    // Load course info into backend
+    loadCourseInfo(courses[newCurrentCourseIndex].id);
+  };
+
+  const loadCourseInfo = async (currCourseId) => {
+    try {
+      const response = await axios.get(`http://localhost:3500/loadCourses/`, {
+        params: {
+          "key": canvasKey,
+          "courseId": currCourseId
+        }
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  // Processing messages
   const handleSend = async (message) => {
     const newMessage = {
       message: message,
@@ -89,84 +117,82 @@ function App() {
     await processMessage(newMessages);
   };
 
-  // !!! This needs to be fixed !!!
   async function processMessage(chatMessages) {
+
     let apiMessages = chatMessages.map((messageObject) => {
-      // let role = "";
-      // if(messageObject.sender === "user") {
-      //   role = "user";
-      // } else {
-      //   role = "assistant";
-      // }
       let role = messageObject.sender === 'user' ? 'user' : 'assistant';
-      
       return {
         role: role,
         content: messageObject.message
       }
     });
 
-    // const systemMessage = {
-    //   role: 'system',
-    //   content: 'Your name is Navigator. Explain all concepts like I am a student in this class.'
-    // }
+    const systemMessage = {
+      role: 'system',
+      content: 'Your name is Navigator. Explain all concepts like I am a student in this class.'
+    }
 
-    // const apiRequestBody = {
-    //   'model': 'gpt-3.5-turbo',
-    //   'messages': [systemMessage, ...apiMessages]
-    // }
+    const apiRequestBody = {
+      'model': 'gpt-3.5-turbo',
+      'messages': [systemMessage, ...apiMessages]
+    }
 
-    // Fix this with a real api call
-    await fetch('http://localhost:3500/courses', {
-      // method: 'POST',
-      // headers: {
-      //   'Authorizaiton': 'Bearer ' + key,
-      //   'Content-Type': 'application/json'
-      // },
-      // body: JSON.stringify(apiRequestBody)
-    }).then((data) => {
-      return data.json()
-    }).then((data) => {
-      console.log(data);
-      setMessages([...chatMessages, {
-        message: 'navigator message',
-        sender: 'NaviGator'
-      }]);
-      setTyping(false);
-    });
+    try {
+      const response = await axios.get('http://localhost:3500/queryDatabase/', {
+        // method: "POST",
+        // apicanvasKey: localStorage.getItem("canvasKey"),
+        // currentCourseIndex: currentCourseIndex,
+        // body: JSON.stringify(apiRequestBody)
+      }).then((data) => {
+        console.log(data);
+
+        setMessages([...chatMessages, {
+          message: data.data.message,
+          sender: 'NaviGator'
+        }]);
+
+        setTyping(false);
+      });
+      console.log("Response" + response)
+      console.log("Response" + response.data)
+      console.log("Response.data" + response.data.message);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 
+  // Render app
   return (
     <div className="App" id="App" >
       <div className="bg"></div>
       <header className="AppHeader">
-        <p className="keyText">
+        <p className="canvasKeyText">
           Enter
-          <a className="keyTextLink" href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273" target="_blank" rel="noreferrer">Canvas Api Key:</a>
+          <a className="canvasKeyTextLink" href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273" target="_blank" rel="noreferrer">
+            Canvas Api Key:
+          </a>
         </p>
-        <input type="text" id="keyField" className="keyField" placeholder={key}></input>
-        <button className="submitKeyButton" onClick={() => submitKey()}>Submit</button>
-
+        <input type="text" id="canvasKeyField" className="canvasKeyField" placeholder={canvasKey}></input>
+        <button className="submitCanvasKeyButton" onClick={() => submitCanvasKey()}>Submit</button>
       </header>
-
-
 
       <div className="canvasDisplay">
         {loading ? <p>Loading...</p> : <></>}
         {courses.length > 0 ?
           <div>
             <h1>Canvas Courses</h1>
-            <select className="classDropdown" onChange={(e) => setCourseId(e.target.selectedIndex)}>
+            <select className="classDropdown" onChange={(e) => handleSelectNewCourse(e.target.selectedIndex - 1)}>
+              <option selected disabled hidden>Select a course</option>
               {courses.map((course) => (
                 <option>{course.name}</option>
               ))}
             </select>
 
 
-            {courseId >= 0 ?
+            {currentCourseIndex >= 0 ?
               <div className='chatBox'>
-                {/* {courses[courseId].name} */}
-                {/* <div dangerouslySetInnerHTML={{ __html: courses[courseId].syllabus_body || 'No syllabus available' }} /> */}
+                {/* {courses[currentCourseIndex].name} */}
+                {/* <div dangerouslySetInnerHTML={{ __html: courses[currentCourseIndex].syllabus_body || 'No syllabus available' }} /> */}
                 <MainContainer >
                   <ChatContainer>
                     <MessageList
@@ -177,7 +203,7 @@ function App() {
                         return <Message key={i} model={message} />
                       })}
                     </MessageList>
-                    <MessageInput placeholder="Type message here" onSend={handleSend} />
+                    <MessageInput placeholder="Ask Navigator..." onSend={handleSend} attachButton={false} />
                   </ChatContainer>
                 </MainContainer>
               </div>

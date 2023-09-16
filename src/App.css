@@ -13,7 +13,6 @@
   padding: 0;
 }
 
-
 .App {
   text-align: center;
   font-family: Poppins;
@@ -21,10 +20,10 @@
 
 .bg {
   background: rgb(253, 255, 253);
-  background: linear-gradient(333deg, rgba(200, 255, 200, 1) 0%, rgba(161, 224, 196, 1) 47%, rgba(0, 255, 222, 1) 100%);
+  background: linear-gradient(333deg, rgba(200,255,200,1) 0%, rgba(161,224,196,1) 47%, rgba(0,255,222,1) 100%); 
   filter: blur(10px);
   -webkit-filter: blur(10px);
-  height: 100%;
+  height:100%;
   width: 100%;
   position: fixed;
   top: 0;
@@ -43,19 +42,18 @@
   color: white;
 }
 
-
-.keyText,
-.keyTextLink {
+.canvasKeyText,
+.canvasKeyTextLink {
   color: rgba(0, 255, 222, 1);
   padding-bottom: .5vh;
 }
 
-.keyTextLink {
+.canvasKeyTextLink {
   padding-left: 8px;
   padding-right: 2vw;
 }
 
-.keyField {
+.canvasKeyField {
   background-color: rgb(173, 236, 228);
   border-width: 0px;
   height: 3vh;
@@ -65,7 +63,7 @@
   padding-left: .5vw;
 }
 
-.submitKeyButton {
+.submitCanvasKeyButton {
   margin-left: 1vw;
   width: 10vw;
   height: 3vh;
@@ -85,20 +83,52 @@
   max-height: 3vh;
   font-family: 'Poppins';
   text-align: center;
+  margin-bottom: 1vh;
 }
 
-.canvasDisplay {
+.canvasDisplay { 
   height: 98vh;
   color: #282c34;
   padding-top: 2vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: rbga(0,0,0,0);
 }
 
+
 .chatBox {
-  /* background-color: #282c34; */
+  padding-top: 2vh;
   width: 60vw;
-  /* overflow-y: scroll; */
-  height: 70vh;
+  height: 83vh;
+}
+
+.cs-main-container {
+  border-color: #282c34 !important;
+  border-radius: 10px;
+}
+
+.scrollbar-container, .cs-message-input, .cs-typing-indicator {
+  background-color: #282c34 !important;
+  border-color: #282c34 !important;
+}
+
+.cs-typing-indicator__text {
+  color: rgb(173, 236, 212) !important;
+}
+
+.cs-typing-indicator__dot {
+  background-color: rgb(173, 236, 212) !important;
+}
+
+.cs-message__content {
+  background: linear-gradient(333deg, rgba(0,78,255,0.2861345221682423) 0%, rgba(161,220,224,0.798739564185049) 68%, rgba(220,255,200,0.7903362028405112) 91%);
+  color: #282c34 !important;
+  font-family: 'Poppins' !important;
+}
+
+.cs-message-input__content-editor, .cs-message-input__content-editor-wrapper {
+  background-color: rgb(173, 236, 228) !important;
+  color: #282c34 !important;
+  font-family: 'Poppins' !important;
 }
