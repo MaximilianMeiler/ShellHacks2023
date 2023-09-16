@@ -7,7 +7,7 @@ import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Typin
 function App() {
   document.title = "NaviGator";
   const [canvasKey, setCanvasKey] = useState(localStorage.getItem("canvasKey") === null ? "" : localStorage.getItem("canvasKey"));
-  const [courses, setCourses] = useState([]);
+  const [ids, setIds] = useState({});
   const [loading, setLoading] = useState(false);
   const [currentCourseIndex, setCurrentCourseIndex] = useState();
   const [messages, setMessages] = useState([]);
@@ -53,14 +53,14 @@ function App() {
     setLoading(true);
     try {
       // Replace with your Node.js API URL and student token
-      const response = await axios.get(`http://localhost:3500/courses/`, { params: { "key": localStorage.getItem("canvasKey")} });
+      const response = await axios.get(`http://localhost:3500/getCourseIds`, { params: { "canvas_api_token": localStorage.getItem("canvasKey")} });
       console.log(response.data);
-      setCourses(response.data);
+      setIds(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
     setLoading(false);
-    console.log(courses);
+    console.log(ids);
   };
 
   // Processing course selection from dropdown
@@ -80,15 +80,16 @@ function App() {
     setCurrentCourseIndex(newCurrentCourseIndex);
 
     // Load course info into backend
-    loadCourseInfo(courses[newCurrentCourseIndex].id);
+    loadCourseInfo(ids.courseIds[newCurrentCourseIndex]);
   };
 
   const loadCourseInfo = async (currCourseId) => {
     try {
-      const response = await axios.get(`http://localhost:3500/loadCourses/`, {
+      const response = await axios.post(`http://localhost:3500/loadCourse/`, {
         params: {
           "key": canvasKey,
-          "courseId": currCourseId
+          "courseId": currCourseId,
+          "courseName": ids.courseNames[currentCourseIndex]
         }
       });
       console.log(response.data);
@@ -178,13 +179,13 @@ function App() {
 
       <div className="canvasDisplay">
         {loading ? <p>Loading...</p> : <></>}
-        {courses.length > 0 ?
+        {Object.keys(ids).length !== 0 && ids.courseIds.length > 0 ?
           <div>
             <h1>Canvas Courses</h1>
             <select className="classDropdown" onChange={(e) => handleSelectNewCourse(e.target.selectedIndex - 1)}>
               <option selected disabled hidden>Select a course</option>
-              {courses.map((course) => (
-                <option>{course.name}</option>
+              {ids.courseNames.map((name) => (
+                <option>{name}</option>
               ))}
             </select>
 

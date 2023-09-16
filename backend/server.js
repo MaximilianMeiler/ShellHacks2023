@@ -106,8 +106,9 @@ app.get('/getCourseIds', async (req, res) => {
       }
     });
 
+    const courseNames = response.data.map(course => course.name);
     const courseIds = response.data.map(course => course.id);
-    return res.json({ courseIds });
+    return res.json({ courseNames, courseIds });
 
   } catch (error) {
     console.error('Error fetching course IDs:', error);
@@ -115,6 +116,18 @@ app.get('/getCourseIds', async (req, res) => {
   }
 });
 
+// API endpoint to load course documents into LangChain
+app.post('/loadCourse/', async (req, res) => {
+  const canvasKey = req.body.key;
+  const courseId = req.body.courseId;
+  if (!canvasKey || !courseId) {
+    return res.status(400).json({ error: 'Missing required parameters' });
+  }
+  await fs.writeFile(`backend/${canvasKey}.txt`, courseId);
+  res.sendStatus(201);
+});
+
+// API endpoint to get course syllabus
 app.get('/getSyllabus', async (req, res) => {
   const courseId = req.query.courseId;
   const canvas_api_token = req.query.canvas_api_token;
@@ -138,6 +151,7 @@ app.get('/getSyllabus', async (req, res) => {
   }
 }); 
 
+<<<<<<< HEAD
 app.get('/createDatabase', async (req, res) => {
   const { course_id, canvas_api_token } = req.query;
 
@@ -201,6 +215,8 @@ app.get('/createDatabase', async (req, res) => {
 
 
 
+=======
+>>>>>>> c1b8e121f27cf498cce40a139056fce16e3f3937
 // need to make an api
 //   -> "/getSyllabus   public description"
 //   -> "/getSyllabus (req,res) (Done)"
