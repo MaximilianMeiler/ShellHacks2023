@@ -220,10 +220,10 @@ app.get('/queryDatabase', async (req, res) => {
     {context}
     Question: {question}
     Helpful Answer:`;
-    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
+    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
     vectorStore = await HNSWLib.load(
       VECTOR_STORE_PATH,
-      new OpenAIEmbeddings({openAIApiKey: "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",
+      new OpenAIEmbeddings({openAIApiKey: "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",
       verbose: true})
     );
 
@@ -245,11 +245,11 @@ app.get('/queryDatabase', async (req, res) => {
     */
     const fasterModel = new ChatOpenAI({
       modelName: "gpt-3.5-turbo",
-      openAIApiKey: "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"
+      openAIApiKey: "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"
     });
     const slowerModel = new ChatOpenAI({
       modelName: "gpt-4",
-      openAIApiKey: "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"
+      openAIApiKey: "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"
     });
    const chain = ConversationalRetrievalQAChain.fromLLM(
     slowerModel,
@@ -326,12 +326,12 @@ app.get('/createDatabase', async (req, res) => {
   
   const vectorStoreState = path.join(__dirname, `coursesVectorStore/${course_id}`);
 
-  
+  /*
   if(fs.existsSync(vectorStoreState)) {
     res.send('we are done boy thats on elon');
     return;
   }
-  
+  */
   if (!course_id || !canvas_api_token) {
     return res.status(400).json({ error: 'courseId and canvas_api_token are required' });
   }
@@ -433,7 +433,7 @@ app.get('/createDatabase', async (req, res) => {
 
     vectorStore = await HNSWLib.fromDocuments(
       splitDocs,
-      new OpenAIEmbeddings({openAIApiKey: "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",
+      new OpenAIEmbeddings({openAIApiKey: "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",
       verbose: true // Optional, set to true if you want verbose logging)
   }));
 
