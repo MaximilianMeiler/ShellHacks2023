@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.5.0",
     "cheerio": "^1.0.0-rc.12",
+    "concurrently": "^8.2.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "langchain": "^0.0.150",
@@ -21,7 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "concurrently \"npm start\" \"node ./backend/server.js\""
   },
   "eslintConfig": {
     "extends": [
