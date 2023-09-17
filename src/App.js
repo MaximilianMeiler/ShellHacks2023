@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("canvasKey") && localStorage.getItem("canvasKey").length > 0) {
       fetchCourses();
-      setPainter(painters.painters[Math.floor(Math.random()*19)]);
+      setPainter(painters.painters[Math.floor(Math.random() * 19)]);
     }
   }, []);
 
@@ -58,7 +58,7 @@ function App() {
     setLoading(true);
     try {
       // Replace with your Node.js API URL and student token
-      const response = await axios.get(`http://localhost:3500/getCourseIds`, { params: { "canvas_api_token": localStorage.getItem("canvasKey")} });
+      const response = await axios.get(`http://localhost:3500/getCourseIds`, { params: { "canvas_api_token": localStorage.getItem("canvasKey") } });
       console.log(response.data);
       setIds(response.data);
     } catch (error) {
@@ -70,7 +70,7 @@ function App() {
 
   // Processing course selection from dropdown
   const handleSelectNewCourse = async (newCurrentCourseIndex) => {
-    if (Object.keys(ids).length === 0) {return;}
+    if (Object.keys(ids).length === 0) { return; }
 
     // Set messages to empty
     setMessages([
@@ -117,9 +117,9 @@ function App() {
 
     // Update messages state
     setMessages(newMessages);
-    
+
     setTyping(true);
-    
+
     await axios.get("http://localhost:3500/queryDatabase/", {
       params: {
         "course_id": ids.courseIds[currentCourseIndex],
@@ -129,7 +129,7 @@ function App() {
 
     try {
       // Replace with your Node.js API URL and student token
-      const response = await axios.get("http://localhost:3500/queryDatabase/", {params: {"course_id": ids.courseIds[currentCourseIndex], "messages": messages}});
+      const response = await axios.get("http://localhost:3500/queryDatabase/", { params: { "course_id": ids.courseIds[currentCourseIndex], "messages": messages } });
       setMessages(response);
       setTyping(false);
     } catch (error) {
@@ -223,6 +223,10 @@ function App() {
                       scrollBehavor='smooth'
                       typingIndicator={typing ? <TypingIndicator content="gpTA is typing" /> : null}
                     >
+                      <Message key={0} model={{
+                        message: `Hello, my name is gpTA, I am trained on all of the course content in your course "${ids.courseNames[currentCourseIndex]}", including the syllabus and all the files. How can I help you today?`,
+                        sender: 'ChatTA'
+                      }} />
                       {messages.map((message, i) => {
                         return <Message key={i} model={message} />
                       })}
