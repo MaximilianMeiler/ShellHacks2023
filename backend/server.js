@@ -32,7 +32,7 @@ const { PromptTemplate } = require("langchain/prompts");
 const CANVAS_API_URL = 'https://canvas.instructure.com/api/v1';
 app.use(cors());
 
-
+let vectorStore;
 //(Test): This is just for grabbing the current classes 
 /*
   Example Courses:
@@ -49,13 +49,18 @@ app.use(cors());
     ]
 */
 
-async function downloadFile(course_id, url) {
+async function downloadFile(course_id, url, canvas_api_token) {
   const response = await axios({
     method: 'GET',
     url: url,
     responseType: 'stream',
+    headers: {
+      Authorization: `Bearer ${canvas_api_token}`
+    }
   });
 
+  console.log(response);
+  /*
   const contentType = response.headers['content-type'];
   let fileType = null;
   
@@ -93,6 +98,7 @@ async function downloadFile(course_id, url) {
     writer.on('finish', resolve);
     writer.on('error', reject);
   });
+  */
 }
 
 // 8. Define a function to normalize the content of the documents
@@ -265,12 +271,12 @@ app.get('/createDatabase', async (req, res) => {
         }
       })
 
-    const files = await axios.get("http://localhost:3500/getFiles", {
-        params: {
-          course_id: course_id,
-          canvas_api_token: canvas_api_token
-        }
-      })
+     const files = await axios.get("http://localhost:3500/getFiles", {
+         params: {
+           course_id: course_id,
+           canvas_api_token: canvas_api_token
+         }
+       })
     //console.log(modules);
     //console.log(syllabus);
     //res.json("yolo");
@@ -307,19 +313,25 @@ app.get('/createDatabase', async (req, res) => {
   });
     fs.writeFileSync(modulesFilePath, modulesJsonString);
     
-    for (const file of files.data.urls) {
-      await downloadFile(course_id, file);
-    }
+     for (const file of files.data.urls) {
+       await downloadFile(course_id, file, canvas_api_token);
+     }
 
+     
+
+    
+     const options = {
+      apiKey: "yPnRhsNp8sYzmjJ2aL4JFiaPqo8T1G",
+    };
     const loader = new DirectoryLoader(directoryPath, {
       ".json": (path) => new JSONLoader(path),
       ".txt": (path) => new TextLoader(path),
       ".csv": (path) => new CSVLoader(path),
       ".pdf": (path) => new PDFLoader(path),
-      ".html": (path) => new UnstructuredLoader(path),
-      ".pptx": (path) => new UnstructuredLoader(path)
+      ".html": (path) => new UnstructuredLoader(path,options),
+      ".pptx": (path) => new UnstructuredLoader(path,options)
     });
-
+    
     const docs = await loader.load();
     
     
@@ -342,6 +354,7 @@ app.get('/createDatabase', async (req, res) => {
     
    res.send('Ma Name is Eron Mux')
    
+   //res.send('bin chillin')
   } 
   catch (error) {
     console.error(`Error creating database: ${error}`);
