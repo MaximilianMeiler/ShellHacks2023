@@ -137,7 +137,7 @@ app.get('/getSyllabus', async (req, res) => {
   if (!courseId || !canvas_api_token) {
     return res.status(400).json({ error: 'courseId and canvas_api_token are required' });
   }
-//
+
   try {
     const response = await axios.get(`${CANVAS_API_URL}/courses/${courseId}?include[]=syllabus_body`, {
       headers: {
