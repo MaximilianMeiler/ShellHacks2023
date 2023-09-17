@@ -3,17 +3,17 @@
   "name": "Create React App Sample",
   "icons": [
     {
-      "src": "ChatTALogo.png",
+      "src": "gpTALogo.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "ChatTALogo.png",
+      "src": "gpTALogo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "ChatTALogo.png",
+      "src": "gpTALogo.png",
       "type": "image/png",
       "sizes": "512x512"
     }

@@ -5,10 +5,10 @@ import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 import painters from "./painters.json";
 import { object } from 'prop-types';
-import logo from './ChatTALogo.png'
+import logo from './gpTALogo.png'
 
 function App() {
-  document.title = "ChatTA";
+  document.title = "gpTA";
   const [painter, setPainter] = useState("")
   const [canvasKey, setCanvasKey] = useState(localStorage.getItem("canvasKey") === null ? "" : localStorage.getItem("canvasKey"));
   const [ids, setIds] = useState({});
@@ -76,7 +76,7 @@ function App() {
     setMessages([
       {
         message: 'Hello, how can I help you?',
-        sender: 'ChatTA'
+        sender: 'gpTA'
       }
     ]);
 
@@ -150,7 +150,7 @@ function App() {
 
     const systemMessage = {
       role: 'system',
-      content: 'Your name is ChatTA. Explain all concepts like I am a student in this class.'
+      content: 'Your name is gpTA. Explain all concepts like I am a student in this class.'
     }
 
     const apiRequestBody = {
@@ -169,7 +169,7 @@ function App() {
 
         setMessages([...chatMessages, {
           message: data.data.message,
-          sender: 'ChatTA'
+          sender: 'gpTA'
         }]);
 
         setTyping(false);
@@ -221,13 +221,13 @@ function App() {
                   <ChatContainer>
                     <MessageList
                       scrollBehavor='smooth'
-                      typingIndicator={typing ? <TypingIndicator content="ChatTA is typing" /> : null}
+                      typingIndicator={typing ? <TypingIndicator content="gpTA is typing" /> : null}
                     >
                       {messages.map((message, i) => {
                         return <Message key={i} model={message} />
                       })}
                     </MessageList>
-                    <MessageInput placeholder="Ask ChatTA..." onSend={handleSend} attachButton={false} />
+                    <MessageInput placeholder="Ask gpTA..." onSend={handleSend} attachButton={false} />
                   </ChatContainer>
                 </MainContainer>
               </div>

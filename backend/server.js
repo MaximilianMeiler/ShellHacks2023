@@ -22,13 +22,13 @@ const { DirectoryLoader } = require("langchain/document_loaders/fs/directory");
 const { TextLoader } = require("langchain/document_loaders/fs/text");
 const { CSVLoader } = require("langchain/document_loaders/fs/csv");
 const { PDFLoader } = require("langchain/document_loaders/fs/pdf");
-const { UnstructuredLoader }  = require("langchain/document_loaders/fs/unstructured");
+const { UnstructuredLoader } = require("langchain/document_loaders/fs/unstructured");
 const { PromptTemplate } = require("langchain/prompts");
 const { ConversationalRetrievalQAChain } = require("langchain/chains");
 const { BufferMemory } = require("langchain/memory");
 
 const { ChatMessageHistory } = require("langchain/memory");
-const { HumanMessage, AIMessage, SystemMessage } = require("langchain/schema");  
+const { HumanMessage, AIMessage, SystemMessage } = require("langchain/schema");
 const { DocxLoader } = require("langchain/document_loaders/fs/docx");
 const CANVAS_API_URL = 'https://canvas.instructure.com/api/v1';
 const { htmlToText } = require('html-to-text');
@@ -61,11 +61,11 @@ async function downloadFile(course_id, url, canvas_api_token) {
     }
   });
 
- // console.log(response);
-  
+  // console.log(response);
+
   const contentType = response.headers['content-type'];
   let fileType = null;
-  
+
   if (contentType === 'application/pdf') {
     fileType = 'pdf';
   } else if (contentType === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
@@ -77,7 +77,7 @@ async function downloadFile(course_id, url, canvas_api_token) {
 
   const contentDisposition = response.headers['content-disposition'];
   let fileName = 'unknown';
-  
+
   if (contentDisposition) {
     const matches = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
     if (matches && matches.length > 1) {
@@ -90,7 +90,7 @@ async function downloadFile(course_id, url, canvas_api_token) {
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
-  
+
   const outputPath = path.join(dirPath, `${fileName}.${fileType}`);
   const writer = fs.createWriteStream(outputPath);
 
@@ -100,7 +100,7 @@ async function downloadFile(course_id, url, canvas_api_token) {
     writer.on('finish', resolve);
     writer.on('error', reject);
   });
-  
+
 }
 
 // 8. Define a function to normalize the content of the documents
@@ -138,7 +138,7 @@ app.get('/getModuleData', async (req, res) => {
 
 app.get('/getCourseIds', async (req, res) => {
   const canvas_api_token = req.query.canvas_api_token;
-  
+
   if (!canvas_api_token) {
     return res.status(400).json({ error: 'canvas_api_token is required' });
   }
@@ -194,13 +194,13 @@ app.get('/getSyllabus', async (req, res) => {
     console.error('Error fetching syllabus:', error);
     res.status(200).json({ message: "No syllabus available" });
   }
-}); 
+});
 
 app.get('/queryDatabase', async (req, res) => {
-  const { course_id, messages} = req.query;
+  const { course_id, messages } = req.query;
   const VECTOR_STORE_PATH = `coursesVectorStore/${course_id}`;
 
-  
+
   try {
     const pastMessages = messages.map((msg) => {
       if (msg.sender === "user") {
@@ -220,15 +220,17 @@ app.get('/queryDatabase', async (req, res) => {
     {context}
     Question: {question}
     Helpful Answer:`;
-    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
+    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo", openAIApiKey: process.env.REACT_APP_OPEN_AI_KEY });
     vectorStore = await HNSWLib.load(
       VECTOR_STORE_PATH,
-      new OpenAIEmbeddings({openAIApiKey: "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",
-      verbose: true})
+      new OpenAIEmbeddings({
+        openAIApiKey: process.env.REACT_APP_OPEN_AI_KEY,
+        verbose: true
+      })
     );
 
-  
-   // console.log("hell??")
+
+    // console.log("hell??")
     const memory = new BufferMemory({
       memoryKey: "chat_history",
       chatHistory: new ChatMessageHistory(pastMessages),
@@ -245,33 +247,33 @@ app.get('/queryDatabase', async (req, res) => {
     */
     const fasterModel = new ChatOpenAI({
       modelName: "gpt-3.5-turbo",
-      openAIApiKey: "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"
+      openAIApiKey: process.env.REACT_APP_OPEN_AI_KEY
     });
     const slowerModel = new ChatOpenAI({
       modelName: "gpt-4",
-      openAIApiKey: "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"
+      openAIApiKey: process.env.REACT_APP_OPEN_AI_KEY
     });
-   const chain = ConversationalRetrievalQAChain.fromLLM(
-    slowerModel,
-    vectorStore.asRetriever(),
-    {
-      returnSourceDocuments: true,
-      memory: new BufferMemory({
-        memoryKey: "chat_history",
-        inputKey: "question", // The key for the input to the chain
-        outputKey: "text", // The key for the final conversational output of the chain
-        returnMessages: true, // If using with a chat model (e.g. gpt-3.5 or gpt-4)
-      }),
-      questionGeneratorChainOptions: {
-        llm: fasterModel,
-      },
-    }
-  );
+    const chain = ConversationalRetrievalQAChain.fromLLM(
+      slowerModel,
+      vectorStore.asRetriever(),
+      {
+        returnSourceDocuments: true,
+        memory: new BufferMemory({
+          memoryKey: "chat_history",
+          inputKey: "question", // The key for the input to the chain
+          outputKey: "text", // The key for the final conversational output of the chain
+          returnMessages: true, // If using with a chat model (e.g. gpt-3.5 or gpt-4)
+        }),
+        questionGeneratorChainOptions: {
+          llm: fasterModel,
+        },
+      }
+    );
     const result = await chain.call({
-      question: messages[messages.length-1].message
+      question: messages[messages.length - 1].message
     });
     console.log(result);
-    
+
     /*
     const memory = new BufferMemory({
       memoryKey: "chat_history",
@@ -279,51 +281,51 @@ app.get('/queryDatabase', async (req, res) => {
       chatHistory: new ChatMessageHistory(pastMessages),
     });
 
-    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
+    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: process.env.REACT_APP_OPEN_AI_KEY});
     */
-   
 
-   
+
+
     /*
     const chain = RetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
       prompt: PromptTemplate.fromTemplate(template),
       returnSourceDocuments: true
     });
     */
-   /*
-    const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
-      prompt: PromptTemplate.fromTemplate(template),
-      returnSourceDocuments: true,
-      memory
-    });
-
-    const response = await chain.call({
-      question: `${messages[messages.length-1].message}`
-    });
-    */
+    /*
+     const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
+       prompt: PromptTemplate.fromTemplate(template),
+       returnSourceDocuments: true,
+       memory
+     });
+ 
+     const response = await chain.call({
+       question: `${messages[messages.length-1].message}`
+     });
+     */
     const newMessages = [
       ...messages,
       { message: result.text, sender: "assistant", direction: "incoming" }
     ];
 
-     
-      // res.send("My name is Jeff Bezos"); // Don't use res.send() here if you plan to use res.json() later
 
-      res.status(200).send(newMessages);
+    // res.send("My name is Jeff Bezos"); // Don't use res.send() here if you plan to use res.json() later
+
+    res.status(200).send(newMessages);
 
   } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({
-          success: false,
-          message: "Error"
-      });
+    console.error("Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error"
+    });
   }
 });
 
 app.get('/createDatabase', async (req, res) => {
   const { course_id, canvas_api_token } = req.query;
 
-  
+
   const vectorStoreState = path.join(__dirname, `coursesVectorStore/${course_id}`);
 
   /*
@@ -340,14 +342,14 @@ app.get('/createDatabase', async (req, res) => {
 
     console.log("bro help me please")
 
-    
+
     const syllabus = await axios.get("http://localhost:3500/getSyllabus", {
-        params: {
-          courseId: course_id,
-          canvas_api_token: canvas_api_token
-        }
-      })
-    
+      params: {
+        courseId: course_id,
+        canvas_api_token: canvas_api_token
+      }
+    })
+
 
     /*
     const modules = await axios.get("http://localhost:3500/getModuleData", {
@@ -357,55 +359,55 @@ app.get('/createDatabase', async (req, res) => {
         }
       })
       */
-     const files = await axios.get("http://localhost:3500/getFiles", {
-         params: {
-           course_id: course_id,
-           canvas_api_token: canvas_api_token
-         }
-       })
-    
-    
+    const files = await axios.get("http://localhost:3500/getFiles", {
+      params: {
+        course_id: course_id,
+        canvas_api_token: canvas_api_token
+      }
+    })
+
+
     const syllabusText = htmlToText(syllabus.data.syllabus, {
       wordWrap: 130
     });
 
     //const modulesJsonString = JSON.stringify(modules.data,null,2); 
-    
+
     const directoryPath = path.join(__dirname, `coursesData/${course_id}`);
     const vectorDatabasePath = path.join(__dirname, `coursesVectorStore/${course_id}`);
-    
+
 
     const syllabusFilePath = path.join(directoryPath, 'syllabus.txt');
     //const modulesFilePath = path.join(directoryPath, 'modules.json');
-    
+
     //console.log(syllabusFilePath);
     //console.log(modulesFilePath);
-    
+
     // Make sure the directory exists, and if not, create it
-    if (!fs.existsSync(directoryPath)){
+    if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: true });
     }
-    if (!fs.existsSync(vectorDatabasePath)){
+    if (!fs.existsSync(vectorDatabasePath)) {
       fs.mkdirSync(vectorDatabasePath, { recursive: true });
     }
-    
+
     // Write the JSON string to a file
-    fs.writeFile(syllabusFilePath, syllabusText, function(err) {
-      if(err) {
-          return console.log(err);
+    fs.writeFile(syllabusFilePath, syllabusText, function (err) {
+      if (err) {
+        return console.log(err);
       }
       console.log("The Text file was saved!");
-  });
-
-  
-   // fs.writeFileSync(modulesFilePath, modulesJsonString);
-     console.log(files)
-     for (const file of files.data.urls) {
-       await downloadFile(course_id, file, canvas_api_token);
-     }
+    });
 
 
-     const options = {
+    // fs.writeFileSync(modulesFilePath, modulesJsonString);
+    console.log(files)
+    for (const file of files.data.urls) {
+      await downloadFile(course_id, file, canvas_api_token);
+    }
+
+
+    const options = {
       apiKey: "yPnRhsNp8sYzmjJ2aL4JFiaPqo8T1G",
     };
 
@@ -414,14 +416,14 @@ app.get('/createDatabase', async (req, res) => {
       ".txt": (path) => new TextLoader(path),
       ".csv": (path) => new CSVLoader(path),
       ".pdf": (path) => new PDFLoader(path),
-      ".docx":  (path) => new DocxLoader(path),
-      ".html": (path) => new UnstructuredLoader(path,options),
-      ".pptx": (path) => new UnstructuredLoader(path,options)
+      ".docx": (path) => new DocxLoader(path),
+      ".html": (path) => new UnstructuredLoader(path, options),
+      ".pptx": (path) => new UnstructuredLoader(path, options)
     });
-    
+
     const docs = await loader.load();
-    
-    
+
+
     const VECTOR_STORE_PATH = vectorDatabasePath;
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 2000,
@@ -433,17 +435,18 @@ app.get('/createDatabase', async (req, res) => {
 
     vectorStore = await HNSWLib.fromDocuments(
       splitDocs,
-      new OpenAIEmbeddings({openAIApiKey: "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",
-      verbose: true // Optional, set to true if you want verbose logging)
-  }));
+      new OpenAIEmbeddings({
+        openAIApiKey: process.env.REACT_APP_OPEN_AI_KEY,
+        verbose: true // Optional, set to true if you want verbose logging)
+      }));
 
-  await vectorStore.save(VECTOR_STORE_PATH);
-   // have to fix the "error" start
-    
-   res.send('Ma Name is Eron Mux')
-   
-   //res.send('bin chillin')
-  } 
+    await vectorStore.save(VECTOR_STORE_PATH);
+    // have to fix the "error" start
+
+    res.send('Ma Name is Eron Mux')
+
+    //res.send('bin chillin')
+  }
   catch (error) {
     console.error(`Error creating database: ${error}`);
     res.status(500).json({ error: 'Failed to create database' });
@@ -465,7 +468,7 @@ app.get('/getPages', async (req, res) => {
       }
     });
     const data = response.data.map(page => page.body);
-    return res.json({data});
+    return res.json({ data });
   } catch (error) {
     console.error('Error fetching pages:', error);
     res.status(200).json({ message: "No pages available" });
@@ -511,8 +514,8 @@ app.get('/getFiles', async (req, res) => {
 //  -> "/createCourseDatabase(req,res)"
 //       -> first grab syallbus, modules,dpages, and files
 //       -> if the couseIDFile Does not exist
-  //       -> create database under coursesData and name the data-file with the course-id
-  //       -> we will store the 
+//       -> create database under coursesData and name the data-file with the course-id
+//       -> we will store the 
 // -> "/queryDatabase"
 //    -> req -> will be just some JSON messages
 //    -> res -> will also be a json
