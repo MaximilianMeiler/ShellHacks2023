@@ -10,13 +10,10 @@ const app = express();
 // const thisIsSaisToken = 'Bearer 1016~Gkgpf5ZYLq6OW13oDzRVkazWyVCnnzGRDwCWw9ykPYMqkQe0RqkaqWOnzKv4HWCb';
 
 const { JSONLoader } = require("langchain/document_loaders/fs/json");
-const { OpenAI } = require("langchain/llms/openai");
 const { RetrievalQAChain } = require("langchain/chains");
 const { HNSWLib } = require("langchain/vectorstores/hnswlib");
-const { CheerioWebBaseLoader } = require("langchain/document_loaders/web/cheerio");
 const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
 const { OpenAIEmbeddings } = require("langchain/embeddings/openai");
-const { MemoryVectorStore } = require("langchain/vectorstores/memory");
 const { ChatOpenAI } = require("langchain/chat_models/openai");
 
 // 1. Import document loaders for different file formats
@@ -31,9 +28,10 @@ const { ConversationalRetrievalQAChain } = require("langchain/chains");
 const { BufferMemory } = require("langchain/memory");
 
 const { ChatMessageHistory } = require("langchain/memory");
-const { constants } = require("buffer");
-const { HumanMessage, AIMessage } = require("langchain/schema");  
+const { HumanMessage, AIMessage, SystemMessage } = require("langchain/schema");  
+const { DocxLoader } = require("langchain/document_loaders/fs/docx");
 const CANVAS_API_URL = 'https://canvas.instructure.com/api/v1';
+const { htmlToText } = require('html-to-text');
 app.use(cors());
 
 let vectorStore;
@@ -64,7 +62,7 @@ async function downloadFile(course_id, url, canvas_api_token) {
   });
 
   console.log(response);
-  /*
+  
   const contentType = response.headers['content-type'];
   let fileType = null;
   
@@ -102,7 +100,7 @@ async function downloadFile(course_id, url, canvas_api_token) {
     writer.on('finish', resolve);
     writer.on('error', reject);
   });
-  */
+  
 }
 
 // 8. Define a function to normalize the content of the documents
@@ -202,47 +200,70 @@ app.get('/queryDatabase', async (req, res) => {
   const { course_id, messages} = req.query;
   const VECTOR_STORE_PATH = `coursesVectorStore/${course_id}`;
 
-  console.log(typeof messages)
-  const messagesArray = JSON.parse(messages);
-  console.log(typeof messagesArray);
-  console.log(messagesArray);
   
   try {
-    const pastMessages = messagesArray.map((msg) => {
+    const pastMessages = messages.map((msg) => {
       if (msg.sender === "user") {
         return new HumanMessage(msg.message);
       } else {
         return new AIMessage(msg.message);
       }
     });
-    const memory = new BufferMemory({
-      chatHistory: new ChatMessageHistory(pastMessages),
-    });
 
-    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
-    vectorStore = await HNSWLib.load(
-      VECTOR_STORE_PATH,
-      new OpenAIEmbeddings({openAIApiKey: "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",
-      verbose: true})
-    );
-
-    const template = `You are a helpful Canvas AI guide to an interface for students work with school 
-    documents and orgnaizes student info. Use the following pieces of context to answer the question at the end.
-    If you don't know the answer, just say that you don't know, don't try to make up an answer. Only use the following information provided to form 
-    your answer, do not use any outside or prior knowledge.
-    Be as specfic as possible, use your knowledge source from the vector database, and provide a highly intelligent yet concise
-    response to the query. Provide information specific to the course, do not give general advice, and specfically give information regarding
-    the course in hand.
+    const template = `You are a helpful Canvas AI that has access on numerous documents for a specifc course taken by
+    a student in an school platform called Canvas. Students will come to you to query specific questions about the course, and you will use your
+    knowledge base of the provided student Canvas documents to respond with a highly detailed and helpful answer to the student. Do not be vague,
+    nor deny the student's request, nor send them to an external source. Use your student document knowledge base to best help the student, and make
+    sure to base your answers from your document base, and
     {context}
     Question: {question}
     Helpful Answer:`;
+    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
+    vectorStore = await HNSWLib.load(
+      VECTOR_STORE_PATH,
+      new OpenAIEmbeddings({openAIApiKey: "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",
+      verbose: true})
+    );
+
+  
+   // console.log("hell??")
+    const memory = new BufferMemory({
+      memoryKey: "chat_history",
+      chatHistory: new ChatMessageHistory(pastMessages),
+      returnMessages: true
+    });
+
+    const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
+      prompt: PromptTemplate.fromTemplate(template),
+      returnSourceDocuments: false,
+      memory,
+
+    });
+          
+    const result = await chain.call({
+      question: messages[messages.length-1].message
+    });
+    console.log(result);
     
+    /*
+    const memory = new BufferMemory({
+      memoryKey: "chat_history",
+      returnMessages: true,
+      chatHistory: new ChatMessageHistory(pastMessages),
+    });
+
+    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
+    */
+   
+
+   
     /*
     const chain = RetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
       prompt: PromptTemplate.fromTemplate(template),
       returnSourceDocuments: true
     });
     */
+   /*
     const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
       prompt: PromptTemplate.fromTemplate(template),
       returnSourceDocuments: true,
@@ -250,18 +271,18 @@ app.get('/queryDatabase', async (req, res) => {
     });
 
     const response = await chain.call({
-      query: `${messages[messages.length-1].message}`
+      question: `${messages[messages.length-1].message}`
     });
-      
+    */
     const newMessages = [
-      ...messagesArray,
-      { message: response, sender: "assistant", direction: "incoming" }
+      ...messages,
+      { message: result.text, sender: "assistant", direction: "incoming" }
     ];
 
-      console.log(response);
+     
       // res.send("My name is Jeff Bezos"); // Don't use res.send() here if you plan to use res.json() later
 
-      res.status(200).json({newMessages})
+      res.status(200).send(newMessages);
 
   } catch (error) {
       console.error("Error:", error);
@@ -275,6 +296,13 @@ app.get('/queryDatabase', async (req, res) => {
 app.get('/createDatabase', async (req, res) => {
   const { course_id, canvas_api_token } = req.query;
 
+  
+  const vectorStoreState = path.join(__dirname, `coursesVectorStore/${course_id}`);
+
+  if(fs.existsSync(vectorStoreState)) {
+    res.send('we are done boy thats on elon');
+    return;
+  }
   if (!course_id || !canvas_api_token) {
     return res.status(400).json({ error: 'courseId and canvas_api_token are required' });
   }
@@ -305,20 +333,19 @@ app.get('/createDatabase', async (req, res) => {
            canvas_api_token: canvas_api_token
          }
        })
-    //console.log(modules);
-    //console.log(syllabus);
-    //res.json("yolo");
     
-    //console.log(syllabus.data.syllabus);
     
-    const syllabusHTML = syllabus.data.syllabus;
+    const syllabusText = htmlToText(syllabus.data.syllabus, {
+      wordWrap: 130
+    });
+
     const modulesJsonString = JSON.stringify(modules.data,null,2); 
     
     const directoryPath = path.join(__dirname, `coursesData/${course_id}`);
     const vectorDatabasePath = path.join(__dirname, `coursesVectorStore/${course_id}`);
     
 
-    const syllabusFilePath = path.join(directoryPath, 'syllabus.html');
+    const syllabusFilePath = path.join(directoryPath, 'syllabus.txt');
     const modulesFilePath = path.join(directoryPath, 'modules.json');
     
     //console.log(syllabusFilePath);
@@ -333,11 +360,11 @@ app.get('/createDatabase', async (req, res) => {
     }
     
     // Write the JSON string to a file
-    fs.writeFile(syllabusFilePath, syllabusHTML, function(err) {
+    fs.writeFile(syllabusFilePath, syllabusText, function(err) {
       if(err) {
           return console.log(err);
       }
-      console.log("The HTML file was saved!");
+      console.log("The Text file was saved!");
   });
     fs.writeFileSync(modulesFilePath, modulesJsonString);
     
@@ -345,11 +372,17 @@ app.get('/createDatabase', async (req, res) => {
        await downloadFile(course_id, file, canvas_api_token);
      }
 
+
+     const options = {
+      apiKey: "yPnRhsNp8sYzmjJ2aL4JFiaPqo8T1G",
+    };
+
     const loader = new DirectoryLoader(directoryPath, {
       ".json": (path) => new JSONLoader(path),
       ".txt": (path) => new TextLoader(path),
       ".csv": (path) => new CSVLoader(path),
       ".pdf": (path) => new PDFLoader(path),
+      ".docx":  (path) => new DocxLoader(path),
       ".html": (path) => new UnstructuredLoader(path,options),
       ".pptx": (path) => new UnstructuredLoader(path,options)
     });
@@ -360,6 +393,7 @@ app.get('/createDatabase', async (req, res) => {
     const VECTOR_STORE_PATH = vectorDatabasePath;
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
+      chunkOverlap: 200
     });
 
     const normalizedDocs = normalizeDocuments(docs);
@@ -367,7 +401,7 @@ app.get('/createDatabase', async (req, res) => {
 
     vectorStore = await HNSWLib.fromDocuments(
       splitDocs,
-      new OpenAIEmbeddings({openAIApiKey: "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",
+      new OpenAIEmbeddings({openAIApiKey: "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",
       verbose: true // Optional, set to true if you want verbose logging)
   }));
 

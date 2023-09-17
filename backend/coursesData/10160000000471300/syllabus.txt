@@ -1,0 +1,480 @@
+CDA3101 COURSE SYLLABUS
+
+
+WELCOME TO THE COURSE
+
+Tu 3-4:55pm Carleton Auditorium
+
+Th 4:05-4:55pm Carleton Auditorium
+
+This class will provide you with knowledge and insight into how computers work.
+ At the end of this class, you will be able to read a specification sheet for a
+computer and know what all the parameters mean. Your learning experience will
+include videos, online textbook activities, writing ARM assembly language
+programs, and completing a cache simulation.
+
+If you would like a PDF version of this syllabus, please click here:
+HWCOE-CDA3101-Spring2023.pdf
+[https://canvas.instructure.com/courses/1016~471300/files/1016~75197470?verifier=dyv7WsncISROXFNZHq65kHwJsuxdUR2TBuQu0cQA&wrap=1]
+
+
+ COURSE DESCRIPTION
+
+This course focuses on the organization of computing systems. In this course,
+you will learn about:
+
+
+ * Organization of computing systems.
+ * Logical basis of computer structure.
+ * Machine representation of instructions and data, flow of control, and basic
+   machine instructions.
+ * Assembly language programming.
+
+
+ COURSE OBJECTIVES
+
+By the end of this course, you will be able to:
+
+ 1. Calculate computer performance.
+ 2. Represent simple high level language programs in ARM.
+ 3. Represent ARM assembly language instructions in binary machine instructions.
+ 4. Describe and demonstrate the use of stack frames for saving local variables.
+ 5. Represent integers and floating-point numbers in binary.
+ 6. Trace the execution of ARM instructions through simple single cycle and
+    pipelined datapaths.
+ 7. Distinguish between direct mapped, set associative, and fully associative
+    cache designs.
+
+
+ COURSE REQUIREMENTS
+
+REQUIRED TEXTBOOK
+
+The required textbook for this course will be the zyBooks version of Patterson &
+Hennessy. Computer Organization and Design: ARM Edition. Morgan Kaufmann (ISBN
+978-1-394-11658-4). You must purchase the zyBooks version of this text as your
+participation grade will be assessed through its use. For instructions on how to
+access zyBooks, please see the Orientation Module, under Key Course Elements
+here
+[https://canvas.instructure.com/courses/1016~471300/pages/course-orientation].
+
+ZYBOOKS CODE FOR THE CURRENT SEMESTER:
+
+UFLCDA3101ReschSpring2023
+
+ 
+
+PREREQUISITES
+
+To take this course, you must have completed the following courses:
+
+ * COP 3504 or COP 3503
+ * MAC 2233, MAC 2311 or MAC 3472
+ * COT 3100
+
+ 
+
+MINIMUM TECHNOLOGY REQUIREMENTS
+
+The University of Florida expects students entering an online program to acquire
+computer hardware and software appropriate to their degree program. Most
+computers are capable of meeting the following general requirements. A student’s
+computer configuration should include:
+
+ * Webcam
+ * Microphone
+ * Broadband connection to the Internet and related equipment (Cable/DSL modem)
+ * Microsoft Office Suite installed (provided by the university)
+
+Individual colleges may have additional requirements or recommendations, which
+students should review before starting their program.
+
+Students should be able to download and install an application on their
+computer.  
+
+Students should be familiar with using the Linux command line interface.
+
+ZOOM
+
+Zoom is an easy-to-use video conferencing service available to all UF students,
+faculty, and staff that allows for meetings of up to 100 participants.
+
+You can find resources and help using Zoom at the University of Florida's Zoom
+[https://ufl.zoom.us/] website.
+
+
+ COURSE POLICIES
+
+MAKE-UP POLICY
+
+
+Examlets and the Final Exam may not be made up.  There is one dropped Examlet.  
+
+ 
+
+LATE POLICY
+
+Programming Assignments, Cache Analysis Assignment, and Buffer Overflow
+Assignment may be turned in up to four days late with a late penalty of 10
+points per day.  
+
+ 
+
+HONESTY POLICY
+
+
+Your code for your Programming Assignments and the Analysis Assignments must be
+your own.  You may discuss assignments with others, but copy/pasting code from
+other students or online resources is strictly prohibited. We will be using
+TurnItIn to check for plagiarism. 
+
+Your writing and graphs for the Cache Analysis Assignment must be your own. 
+Copy/pasting writing and/or graphs from other students is strictly prohibited.
+
+You may discuss and draw out algorithms for the assignments with other
+students.  You may not copy code from another student.
+
+EXAMLETS AND FINAL EXAM
+
+
+Examlets and the Final Exam are taken on Honorlock on during the 4:05-4:55pm
+class period on scheduled day for the examlet.  For Examlets and the Final Exam,
+students may use the Leg reference sheet and one other printed reference sheet.
+
+The Final Exam is May 5 10:30am-12:30pm
+
+Taking the examlet or Final Exam at other than the scheduled time requires a
+university approved excuse and must be arranged before the date of the examlet
+or Final Exam.
+
+Examlets and Final Exam may not be made up.  There is a dropped examlet.
+
+DISCUSSION OF GRADES
+
+
+Grades on any assignment may be discussed with me via email or in office hours
+up to seven days after the grade was released.
+
+ 
+
+EXTRA CREDIT
+
+
+Up to two extra credit assignments may be completed.  Each assignment will be
+worth 1% of your grade.  The extra credit will be added manually to your grade
+at the end of the course.  
+
+ETIQUETTE EXPECTATIONS
+
+Please communicate in a professional manner in email, on Microsoft Teams, and in
+Canvas Discussions.  Guidelines can be found here.
+[http://%E2%80%AFhttps://www.cise.ufl.edu/wp-content/uploads/2019/08/CISE_Netiquette_Guide.pdf]
+
+
+ GRADING POLICY
+
+We will make every effort to have each assignment graded and posted within one
+week of the due date. However, due to the large number of students in each
+section of this course, returning grades
+
+ 
+
+COURSE GRADING POLICY
+
+Assignment Points Examlets (6, 1 drop) 30% Programming Assignments 22% Buffer
+Overflow Assignment 10% Cache Analysis Assignment 10% zyBooks  Activities 8%
+Final Exam 20% Total 100%
+
+ 
+
+GRADING SCALE
+
+Percent
+
+Grade
+
+Grade Points
+
+93 - 100
+
+A
+
+4.00
+
+90.0 - 92.99
+
+A-
+
+3.67
+
+87 - 89.99
+
+B+
+
+3.33
+
+83 - 86.99
+
+B
+
+3.00
+
+80.0 - 82.99
+
+B-
+
+2.67
+
+77 - 79.99
+
+C+
+
+2.33
+
+73 - 76.99
+
+C
+
+2.00
+
+70.0 - 72.99
+
+C-
+
+1.67
+
+67 - 69.99
+
+D+
+
+1.33
+
+63 - 66.99
+
+D
+
+1.00
+
+60.0 - 63.99
+
+D-
+
+0.67
+
+0 - 59.99
+
+E
+
+0.00
+
+See the current UF grading policies
+[https://catalog.ufl.edu/ugrad/current/regulations/info/grades.aspx] for more
+information.
+
+
+ COURSE EVALUATIONS
+
+Students are expected to provide professional and respectful feedback on the
+quality of instruction in this course by completing course evaluations online
+via GatorEvals. Guidance on how to give feedback in a professional and
+respectful manner is available on the GatorEvals Providing Constructive Feedback
+[https://gatorevals.aa.ufl.edu/students/] FAQ page. Students will be notified
+when the evaluation period opens and can complete evaluations through the email
+they receive from GatorEvals, in their Canvas course menu under GatorEvals, or
+via the GatorEvals [https://ufl.bluera.com/ufl/] website. Summaries of course
+evaluation results are available to students at the GatorEvals Public Results
+[https://gatorevals.aa.ufl.edu/public-results] page. More information about UF's
+course evaluation system can be found at the GatorEvals Faculty Evaluations
+[https://gatorevals.aa.ufl.edu/] website.
+
+
+ TIPS FOR SUCCESS
+
+
+Taking a course online can be a lot of fun! Here are some tips that will help
+you get the most of this course while taking full advantage of the online
+format:
+
+ * Schedule "class times" for yourself. It is important to do the coursework on
+   time each week. You will receive a reduction in points for work that is
+   turned in late!
+ * Read ALL of the material contained on this site. There is a lot of helpful
+   information that can save you time and help you meet the objectives of the
+   course.
+ * Print out the Course Summary located in the Course Syllabus and check things
+   off as you go.
+ * Take full advantage of the online discussion boards. Ask for help or
+   clarification of the material if you need it.
+ * Do not wait to ask questions! Waiting to ask a question might cause you to
+   miss a due date.
+ * Do your work well before the due dates. Sometimes things happen. If your
+   computer goes down when you are trying to submit an assignment, you'll need
+   time to troubleshoot the problem.
+ * To be extra safe, back up your work to an external hard drive, thumb drive,
+   or through a cloud service.
+
+
+ UF POLICIES
+
+
+UNIVERSITY POLICY ON ACCOMMODATING STUDENTS WITH DISABILITIES
+
+Students with disabilities requesting accommodations should first register with
+the Disability Resource Center [https://disability.ufl.edu/] (352-392-8565) by
+providing appropriate documentation.  Once registered, students will receive an
+accommodation letter that must be presented to the instructor when requesting
+accommodation.  Students with disabilities should follow this procedure as early
+as possible in the semester.
+
+ 
+
+UNIVERSITY POLICY ON ACADEMIC CONDUCT
+
+UF students are bound by The Honor Pledge, which states, “We, the members of the
+University of Florida community, pledge to hold ourselves and our peers to the
+highest standards of honesty and integrity by abiding by the Honor Code.  On all
+work submitted for credit by students at the University of Florida, the
+following pledge is either required or implied: "On my honor, I have neither
+given nor received unauthorized aid in doing this assignment." The Student Honor
+Code and Student Conduct Code
+[https://sccr.dso.ufl.edu/policies/student-honor-code-student-conduct-code/]
+specifies a number of behaviors that are in violation of this code and the
+possible sanctions. Furthermore, you are obligated to report any condition that
+facilitates academic misconduct to appropriate personnel.  If you have any
+questions or concerns, please consult with the instructor or TAs in this class.
+
+ 
+
+PLAGIARISM
+
+The Student Honor Code and Student Conduct Code
+[https://sccr.dso.ufl.edu/policies/student-honor-code-student-conduct-code/]
+states that a Student must not represent as the Student’s own work all or any
+portion of the work of another. Plagiarism includes but is not limited to:
+
+ * Stealing, misquoting, insufficiently paraphrasing, or patch-writing.
+ * Self-plagiarism is the reuse of the Student’s own submitted work, or the
+   simultaneous submission of the Student’s own work, without the full and clear
+   acknowledgment and permission of the Faculty to whom it is submitted.
+ * Submitting materials from any source without proper attribution.
+ * Submitting a document, assignment, or material that, in whole or in part, is
+   identical or substantially identical to a document or assignment the Student
+   did not author.
+
+
+ SOFTWARE USE
+
+
+All faculty, staff, and students of the University are required and expected to
+obey the laws and legal agreements governing software use. Failure to do so can
+lead to monetary damages and/or criminal penalties for the individual violator.
+Because such violations are also against University policies and rules,
+disciplinary action will be taken as appropriate. We, the members of the
+University of Florida community, pledge to uphold ourselves and our peers to the
+highest standards of honesty and integrity.
+
+
+ PRIVACY AND ACCESSIBILITY POLICIES
+
+
+There are federal laws protecting your privacy with regards to grades earned in
+courses and on individual assignments. For more information, please visit the
+Registrar's explanation of your Ferpa rights here
+[https://registrar.ufl.edu/ferpa/].
+
+For information about the privacy policies of the tools used in this course, see
+the links below:
+
+ * Instructure (Canvas)
+   * Instructure Privacy Policy [https://www.instructure.com/policies/privacy]
+   * Instructure Accessibility
+     [https://www.instructure.com/canvas/accessibility]
+ * Zoom
+   * Zoom Privacy Policy [https://zoom.us/privacy]
+   * Zoom Accessibility [https://zoom.us/accessibility]
+ * Honorlock
+   * Honorlock Privacy Policy [https://honorlock.com/student-privacy-statement/]
+   * Honorlock Accessibility [https://honorlock.com/accessibility-statement/]
+ * Zybooks
+   * Zybooks Privacy [https://www.zybooks.com/privacy-policy/]
+   * Zybooks Accessibility
+     [http://%E2%80%AFhttps://www.zybooks.com/accessibility/%E2%80%AF]
+
+
+ COMMITMENT TO A SAFE AND INCLUSIVE LEARNING ENVIRONMENT
+
+
+The Herbert Wertheim College of Engineering values broad diversity within our
+community and is committed to individual and group empowerment, inclusion, and
+the elimination of discrimination. It is expected that every person in this
+class will treat one another with dignity and respect regardless of gender,
+sexuality, disability, age, socioeconomic status, ethnicity, race, and culture.
+
+If you feel like your performance in class is being impacted by discrimination
+or harassment of any kind, please contact your instructor or any of the
+following:
+
+ * Your academic advisor or Graduate Program Coordinator
+ * Jennifer Nappo, Director of Human Resources, 352-392-0904, jpennacc@ufl.edu
+   [jpennacc@ufl.edu]
+ * Curtis Taylor, Associate Dean of Student Affairs, 352-392-2177,
+   taylor@eng.ufl.edu [taylor@eng.ufl.edu]
+ * Toshikazu Nishida, Associate Dean of Academic Affairs, 352-392-0943,
+   nishida@eng.ufl.edu [nishida@eng.ufl.edu]
+
+
+ GETTING HELP
+
+
+TECHNICAL DIFFICULTIES
+
+For help with technical issues or difficulties with Canvas, please contact the
+UF Help Desk at:
+
+ * http://helpdesk.ufl.edu [http://helpdesk.ufl.edu]
+ * (352) 392-HELP (4357)
+ * Walk-in: HUB 132
+
+Any requests for make-ups due to technical issues should be accompanied by the
+ticket number received from the Help Desk when the problem was reported to them.
+The ticket number will document the time and date of the problem. You should
+email your instructor within 24 hours of the technical difficulty if you wish to
+request a make-up.
+
+ 
+
+HEALTH AND WELLNESS
+
+ * U Matter, We Care: If you or someone you know is in distress, please email
+   umatter@ufl.edu, call 352-392-1575, or visit U Matter We Care
+   [http://umatter.ufl.edu/] to refer or report a concern, and a team member
+   will reach out to the student in distress.
+ * Counseling and Wellness Center:  Visit the UF Counseling & Wellness Center
+   [http://counseling.ufl.edu/] website or call 352-392-1575 for information on
+   crisis services and non-crisis services.
+ * Student Health Care Center: Call 352-392-1161 for 24/7 information to help
+   you find the care you need, or visit the UF Student Health Care Center
+   [http://shcc.ufl.edu] website.
+ * University Police Department: Visit the UF Police Department
+   [http://police.ufl.edu/] website or call 352-392-1111 (or 9-1-1 for
+   emergencies).
+ * UF Health Shands Emergency Room/Trauma Center: For immediate medical care in
+   Gainesville, call 352-733-0111, or go to the emergency room at 1515 SW Archer
+   Road, Gainesville, FL 32608; Visit the UF Health Shands Emergency Room/Trauma
+   Center [http://ufhealth.org/emergency-room-trauma-center] website.
+
+
+ ACADEMIC AND STUDENT SUPPORT
+
+
+ * Career Connections Center: For career assistance and counseling services,
+   visit the UF Career Connections Center [http://career.ufl.edu/] website or
+   call 352-392-1601.
+ * Library Support:  For various ways to receive assistance concerning using the
+   libraries or finding resources, visit the UF George A. Smathers Libraries
+   Ask-A-Librarian [http://cms.uflib.ufl.edu/ask] website.
+ * Teaching Center: For general study skills and tutoring, visit the UF Teaching
+   Center [http://teachingcenter.ufl.edu/] website or call 352-392-2010.
+ * Writing Studio: For help with brainstorming, formatting, and writing papers,
+   visit the University Writing Program Writing Studio
+   [http://writing.ufl.edu/writing-studio/] website or call 352-846-1138.
