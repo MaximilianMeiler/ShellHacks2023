@@ -61,7 +61,7 @@ async function downloadFile(course_id, url, canvas_api_token) {
     }
   });
 
-  console.log(response);
+ // console.log(response);
   
   const contentType = response.headers['content-type'];
   let fileType = null;
@@ -205,8 +205,10 @@ app.get('/queryDatabase', async (req, res) => {
     const pastMessages = messages.map((msg) => {
       if (msg.sender === "user") {
         return new HumanMessage(msg.message);
-      } else {
+      } else if (msg.sender === "assistant") {
         return new AIMessage(msg.message);
+      } else {
+        return new SystemMessage(msg.message);
       }
     });
 
@@ -218,10 +220,10 @@ app.get('/queryDatabase', async (req, res) => {
     {context}
     Question: {question}
     Helpful Answer:`;
-    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
+    const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
     vectorStore = await HNSWLib.load(
       VECTOR_STORE_PATH,
-      new OpenAIEmbeddings({openAIApiKey: "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",
+      new OpenAIEmbeddings({openAIApiKey: "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",
       verbose: true})
     );
 
@@ -233,13 +235,38 @@ app.get('/queryDatabase', async (req, res) => {
       returnMessages: true
     });
 
+    /*
     const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
       prompt: PromptTemplate.fromTemplate(template),
-      returnSourceDocuments: false,
+      returnSourceDocuments: true,
       memory,
 
     });
-          
+    */
+    const fasterModel = new ChatOpenAI({
+      modelName: "gpt-3.5-turbo",
+      openAIApiKey: "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"
+    });
+    const slowerModel = new ChatOpenAI({
+      modelName: "gpt-4",
+      openAIApiKey: "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"
+    });
+   const chain = ConversationalRetrievalQAChain.fromLLM(
+    slowerModel,
+    vectorStore.asRetriever(),
+    {
+      returnSourceDocuments: true,
+      memory: new BufferMemory({
+        memoryKey: "chat_history",
+        inputKey: "question", // The key for the input to the chain
+        outputKey: "text", // The key for the final conversational output of the chain
+        returnMessages: true, // If using with a chat model (e.g. gpt-3.5 or gpt-4)
+      }),
+      questionGeneratorChainOptions: {
+        llm: fasterModel,
+      },
+    }
+  );
     const result = await chain.call({
       question: messages[messages.length-1].message
     });
@@ -299,10 +326,12 @@ app.get('/createDatabase', async (req, res) => {
   
   const vectorStoreState = path.join(__dirname, `coursesVectorStore/${course_id}`);
 
+  
   if(fs.existsSync(vectorStoreState)) {
     res.send('we are done boy thats on elon');
     return;
   }
+  
   if (!course_id || !canvas_api_token) {
     return res.status(400).json({ error: 'courseId and canvas_api_token are required' });
   }
@@ -320,13 +349,14 @@ app.get('/createDatabase', async (req, res) => {
       })
     
 
+    /*
     const modules = await axios.get("http://localhost:3500/getModuleData", {
         params: {
           course_id: course_id,
           canvas_api_token: canvas_api_token
         }
       })
-
+      */
      const files = await axios.get("http://localhost:3500/getFiles", {
          params: {
            course_id: course_id,
@@ -339,14 +369,14 @@ app.get('/createDatabase', async (req, res) => {
       wordWrap: 130
     });
 
-    const modulesJsonString = JSON.stringify(modules.data,null,2); 
+    //const modulesJsonString = JSON.stringify(modules.data,null,2); 
     
     const directoryPath = path.join(__dirname, `coursesData/${course_id}`);
     const vectorDatabasePath = path.join(__dirname, `coursesVectorStore/${course_id}`);
     
 
     const syllabusFilePath = path.join(directoryPath, 'syllabus.txt');
-    const modulesFilePath = path.join(directoryPath, 'modules.json');
+    //const modulesFilePath = path.join(directoryPath, 'modules.json');
     
     //console.log(syllabusFilePath);
     //console.log(modulesFilePath);
@@ -366,8 +396,10 @@ app.get('/createDatabase', async (req, res) => {
       }
       console.log("The Text file was saved!");
   });
-    fs.writeFileSync(modulesFilePath, modulesJsonString);
-    
+
+  
+   // fs.writeFileSync(modulesFilePath, modulesJsonString);
+     console.log(files)
      for (const file of files.data.urls) {
        await downloadFile(course_id, file, canvas_api_token);
      }
@@ -392,7 +424,7 @@ app.get('/createDatabase', async (req, res) => {
     
     const VECTOR_STORE_PATH = vectorDatabasePath;
     const textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 1000,
+      chunkSize: 2000,
       chunkOverlap: 200
     });
 
@@ -401,7 +433,7 @@ app.get('/createDatabase', async (req, res) => {
 
     vectorStore = await HNSWLib.fromDocuments(
       splitDocs,
-      new OpenAIEmbeddings({openAIApiKey: "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",
+      new OpenAIEmbeddings({openAIApiKey: "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",
       verbose: true // Optional, set to true if you want verbose logging)
   }));
 

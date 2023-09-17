@@ -1,0 +1,49 @@
+Check out the Getting Started
+[https://canvas.instructure.com/courses/1016~464024/pages/getting-started] page
+for the official syllabus and start instructions!
+
+ 
+
+Instructor Information
+
+Name: Jeremiah Blanchard
+Email: jjb@eng.ufl.edu [jjb@eng.ufl.edu]
+Office: Conducted via Zoom
+[https://ufl.zoom.us/j/94042176401?pwd=Y1FBRFNRaksxYmlvYUVKNGxpOWd1Zz09]
+Hours: Mon P10 (17:10-:18:00) Open; Tues P10 (17:10-:18:00) by Appt
+
+ 
+
+TA / PM Information
+
+Name Email Address
+David Magda (TA) magdad@ufl.edu [magdad@ufl.edu] Chris Tressler (PM)
+c.tressler@ufl.edu [c.tressler@ufl.edu] Cole Smith (PM) colesmith1@ufl.edu
+[colesmith1@ufl.edu]
+
+ 
+
+Wednesday Labs (NSC 215)
+Periods / Time Section Number(s) TA / PM P3/P4: 09:35-11:30 28123 (3ZED) Chris
+P5/P6: 11:45-13:40 29098 (4ZED) David P7/P8: 13:55-15:50 28122 (2ZED), 29340
+(6ZED) David P9/P10: 16:05-18:00 28121 (1ZED) Liam P11/E1: 18:15-20:05 29339
+(5ZED), 25523 (UFOL) Cole
+
+*Online students may optionally join the P11/E1 lab on Zoom.
+
+ 
+
+Office Hours Pd Time Mon Tues Wed Thurs Fri P7 13:55-14:45 Liam P8 15:00-15:50
+P9 16:05-16:55 Cole Chris (CSE E312) P10 17:10-18:00 Cole
+Jeremiah (Open)
+[https://ufl.zoom.us/j/94042176401?pwd=Y1FBRFNRaksxYmlvYUVKNGxpOWd1Zz09] Chris
+(CSE E312)
+Jeremiah (Appt) P11 18:15-19:05 David (Zoom) [https://ufl.zoom.us/j/94123121588]
+David (Zoom) [https://ufl.zoom.us/j/94123121588] Liam (Zoom)
+[https://ufl.zoom.us/j/94123121588] E1 19:20-20:10 David (Zoom)
+[https://ufl.zoom.us/j/94123121588] David (Zoom)
+[https://ufl.zoom.us/j/94123121588]
+
+Office hours are in CSE E309, unless occupied; in which case in E312, unless
+occupied. If E309 and E312 are occupied by classes, office hours are in "the
+Dungeon" (CSE first floor lab).

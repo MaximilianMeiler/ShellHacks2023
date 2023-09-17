@@ -1,0 +1,554 @@
+COP4600
+
+
+COURSE SYLLABUS
+
+
+ COURSE DESCRIPTION
+
+This course explores the design and implementation of various components of a
+modern operating system, including I/O programming, interrupt handling, process
+and resource management, computer networks, and distributed systems.
+
+
+ CONTACT INFORMATION
+
+Instructor
+
+Alex Gomes de Siqueira
+
+Phone Number
+
+352-392-0466
+
+Email
+
+agomesdesiqueira@ufl.edu [agomesdesiqueira@ufl.edu]
+
+Office Hours
+
+By appointment (online through Zoom Conferences)
+
+For questions about course content, your grade, or other personal issues, use
+the Canvas mail tool. Expect a response within 24 hours.
+
+
+ COURSE OBJECTIVES
+
+By the end of this course, you will be able to:
+
+ 1. Discuss the main components of modern operating systems.
+ 2. Describe multiplexing, process / resource management, and distributed
+    processing concepts.
+ 3. Apply knowledge of data structures, algorithms, performance analysis, and
+    protocols to real-world problems in multi-threaded systems. 
+
+
+ COURSE REQUIREMENTS
+
+REQUIRED TEXTBOOK
+
+Tanenbam, A. S. & Bos, H. (2022). Modern Operating Systems (5th Edition).
+Pearson.
+
+Note: 4th edition or later editions are also welcome.
+
+ 
+
+HELPFUL REFERENCES
+
+
+ * Silberschatz, A. Galvin, P. B., & Gagne, G. (2008). Operating System Concepts
+   (8th Edition). Wiley.
+ * Kernighan, B. W. & Ritchie, D. M. (1988). The C Programming Language (2nd
+   Edition). Pearson.
+
+ 
+
+PREREQUISITES
+
+ * CDA 3101
+ * COP 3530
+ * Knowledge of C or C++
+
+ 
+
+MINIMUM TECHNOLOGY REQUIREMENTS
+
+The University of Florida expects students entering an online program to acquire
+computer hardware and software appropriate to their degree program. Most
+computers are capable of meeting the following general requirements. A student’s
+computer configuration should include:
+
+ * Webcam
+ * Microphone
+ * Broadband connection to the internet and related equipment (cable/DSL modem)
+ * Microsoft Office Suite installed (provided by the university)
+
+Individual colleges may have additional requirements or recommendations, which
+students should review before starting their program.
+
+ 
+
+MINIMUM TECHNICAL SKILLS
+
+To complete your tasks in this course, you will need a basic understanding of
+operating a computer and using word processing software.
+
+ 
+
+MATERIALS/SUPPLY FEES
+
+There is no supply fee for this course.
+
+
+ 
+
+ZOOM
+
+Zoom is an easy-to-use video conferencing service available to all UF students,
+faculty, and staff that allows for meetings of up to 100 participants.
+
+You can find resources and help using Zoom at the University of Florida's Zoom
+[https://ufl.zoom.us/] website.
+
+
+ COURSE POLICIES
+
+Requirements for make-up exams, assignments, and other work in this course are
+consistent with university policies that can be found on UF's Attendance
+Policies
+[http://catalog.ufl.edu/UGRD/academic-regulations/attendance-policies/] website.
+
+As this is an online class, you are responsible for observing all posted due
+dates and are encouraged to be self-directed and take responsibility for your
+learning.
+
+ASSESSMENTS
+
+Assessments serve four purposes. The instructor uses them to determine how well
+the class has mastered areas of knowledge and skill that students; the
+instructor also uses them to evaluate individual students in order to assign
+them a grade, as required by the university. The student can use assessments to
+judge how well they have mastered areas of knowledge and skill and some types of
+assessments present learning opportunities for the student to develop greater
+knowledge and skill. 
+
+This course will have several types of assessments serving various objectives. 
+
+ 
+
+QUIZZES
+
+Quizzes will be discussed at the beginning of the discussion meetings. The
+objective is to test your understanding of the material you are assigned
+(lecture videos and readings). The purpose of quizzes is to motivate the
+students to read the assigned sections and watch lectures, and for the
+instructor to determine how well the material has been understood. 
+
+ 
+
+EXAMINATIONS
+
+Examinations will have two parts: a quiz-style section and a free-response
+section. The quiz-style part will mostly gauge how well the student has mastered
+the basics of operating system components, policies, methods, and analysis.
+These will typically be fill-in-the-blank text or numerical answers, although
+some will be multiple-choice or matching questions.
+
+Free-response questions require the student to engage with the material in a
+deeper way - not simply regurgitate material from the text or lectures. The
+questions may concern the design of a system to achieve a particular purpose in
+a given context or to analyze and evaluate one or more proposed solutions to a
+problem. The purpose is to gauge how well the basics taught in the course can be
+applied to a problem, and to give the student an opportunity to develop more by
+applying the knowledge and skills they have acquired.
+
+To prepare for exams, mastery of the basics covered in lectures, quizzes,
+exercises, and projects is a must. The best way to prepare is to ask yourself
+(or your study group) how the new material relates to earlier material and how
+it could be applied to solve problems. Do all of this well before the exam, and
+get a good night's rest the night before. When you take the test, be sure to
+read the question carefully before you answer it, and to read it again when you
+are done. The questions are not intended to "trick" you or to humiliate you, but
+to get you to think beyond the basics you could get from a crib sheet or the
+text. 
+
+ 
+
+EXERCISES AND PROJECTS
+
+The discussion periods will mainly be devoted to explaining projects and
+exercises. Exercises are mostly short programming/writing assignments designed
+to develop the skills and experience you will need to do the projects. These
+will usually be expected to take no more than an hour to complete.
+
+Projects are more substantive and involve modifying the Reptilian Linux
+operating system. For these, the amount of time you will need may vary widely,
+but these are multi-week projects, so get started early. If you get done sooner,
+great; but if you run into snags, make sure you have the time needed to recover.
+Your best strategy is to map out existing OS functionality related to the
+project, including directories, files, structures, variables, and functions that
+may be relevant. Understand how these work together, then plan how you will
+introduce the changes needed to complete the project. The compile time is likely
+to be much longer than the times you are used to from small, application
+programs, and builds can take well over half an hour, so plan your changes and
+manage your schedule carefully to allow for enough iterations to complete your
+work. Bear in mind that you cannot run a debugger on the OS directly, since it
+has to provide services to all programs, including the debugger! Waiting until
+the last few days to start a project is a sure recipe for disaster.
+
+Projects are intended to help develop the skills and knowledge needed to
+understand and modify a large, legacy codebase successfully. This will take
+time, and there is no substitute for spending the effort to understand the
+system first, then plan and execute the modifications, then thoroughly test that
+these work correctly. Projects also require documentation in the form of a
+report and man pages when appropriate. The report explains what you did, how,
+why, and how you know it is right (or where it is not if it falls short in any
+way). Man pages are the standard Unix way to provide online documentation of
+commands, system calls, libraries, formats, etc.
+
+Getting familiar with Unix commands and system calls will help greatly, as will
+developing a good understanding of how the Linux kernel works. There are many
+books and online tutorials on Unix, and every Unix system provides an online
+manual (type "man man" to learn more). 
+
+ 
+
+GENERAL PHILOSOPHY
+
+This is probably going to be one of the most challenging courses you take as an
+undergraduate. There is a great deal of material to cover, even to address the
+most basic issues in operating systems. It is important to keep up with the
+reading and viewing and to start on homework and projects early. It is like
+drinking from a firehose, and you will need some time to digest the material you
+read/view, so give yourself that time.
+
+It is crucial to remember that getting a grade in this course is not the reason
+you came to UF; not even getting your bachelor's degree is the prize you seek.
+Your goal is to figure out where you fit in society and what career you will
+pursue to build a fulfilling trajectory doing something you love to do and are
+good at. The ability to apply the knowledge and skills you have acquired to the
+challenges of importance in your discipline contributes to the success of
+everyone - whether at a company, university, or other institution. It does not
+do you any good to be given a good grade or a degree if you do not have the
+competence to get the job done in your career. Take advantage of this
+opportunity to acquire the knowledge and develop the skills you will need to
+exercise in your career. If you get into trouble and are wedged, then seek help
+from the instructor, peer mentors, teaching assistants, and your classmates to
+get you over the hump. At the same time, do not look for answers to be handed to
+you - go out and develop them. 
+
+
+ GRADING POLICY
+
+I will make every effort to have each assignment graded and posted within one
+week of the due date.
+
+
+ 
+
+COURSE GRADING POLICY
+
+Assignment Category Points Percent Exercise 0 and Project 0 30 (all) 3%
+Exercises (9, Drop 1) 20 each 21% Projects (3) 100 each 25% Quizzes (10, Drop 1)
+15 each 15% Mid-Term Exam (1) 150 15% Final Exam (1) 180 20% Professionalism 10
+1% TOTAL 1000 100%
+
+ 
+
+GRADING SCALE
+
+Percent Grade Grade Points 100 - 92.5 A 4.00 <92.5 - 89.5 A- 3.67 <89.5 - 86.5
+B+ 3.33 <86.5 - 82.5 B 3.00 <82.5 - 79.5 B- 2.67 <79.5 - 76.5 C+ 2.33 <76.5 -
+72.5 C 2.00 <72.5 - 69.5 C- 1.67 <69.5 - 66.5 D+ 1.33 <66.5 - 62.5 D 1.00 <62.5
+- 59.5 D- 0.67 <59.5 - 0.0 E 0.00
+
+See the current UF grading policies
+[https://catalog.ufl.edu/ugrad/current/regulations/info/grades.aspx] for more
+information.
+
+
+ UF POLICIES
+
+UNIVERSITY POLICY ON ACCOMMODATING STUDENTS WITH DISABILITIES
+
+Students with disabilities requesting accommodations should first register with
+the Disability Resource Center [https://disability.ufl.edu/] (352-392-8565) by
+providing appropriate documentation. Once registered, students will receive an
+accommodation letter that must be presented to the instructor when requesting
+accommodation. Students with disabilities should follow this procedure as early
+as possible in the semester.
+
+ 
+
+UNIVERSITY POLICY ON ACADEMIC CONDUCT
+
+UF students are bound by The Honor Pledge, which states, “We, the members of the
+University of Florida community, pledge to hold ourselves and our peers to the
+highest standards of honesty and integrity by abiding by the Honor Code." On all
+work submitted for credit by students at the University of Florida, the
+following pledge is either required or implied: "On my honor, I have neither
+given nor received unauthorized aid in doing this assignment." The Student Honor
+Code and Student Conduct Code
+[https://sccr.dso.ufl.edu/policies/student-honor-code-student-conduct-code/]
+specifies a number of behaviors that are in violation of this code and the
+possible sanctions. Furthermore, you are obligated to report any condition that
+facilitates academic misconduct to appropriate personnel. If you have any
+questions or concerns, please consult with the instructor or TAs in this class.
+
+ 
+
+PLAGIARISM
+
+The Student Honor Code and Student Conduct Code
+[https://sccr.dso.ufl.edu/policies/student-honor-code-student-conduct-code/]
+states that:
+
+"A Student must not represent as the Student’s own work all or any portion of
+the work of another. Plagiarism includes but is not limited to:
+
+ * Stealing, misquoting, insufficiently paraphrasing, or patch-writing.
+ * Self-plagiarism, which is the reuse of the Student’s own submitted work, or
+   the simultaneous submission of the Student’s own work, without the full and
+   clear acknowledgment and permission of the Faculty to whom it is submitted.
+ * Submitting materials from any source without proper attribution.
+ * Submitting a document, assignment, or material that, in whole or in part, is
+   identical or substantially identical to a document or assignment the Student
+   did not author."
+
+
+ NETIQUETTE AND COMMUNICATION COURTESY
+
+It is important to recognize that the online classroom is in fact a classroom,
+and certain behaviors are expected when you communicate with both your peers and
+your instructors. These guidelines for online behavior and interaction are known
+as netiquette.
+
+SECURITY
+
+Remember that your password is the only thing protecting you from pranks or more
+serious harm.
+
+ * Don't share your password with anyone.
+ * Change your password if you think someone else might know it.
+ * Always log out when you are finished using the system.
+
+GENERAL GUIDELINES
+
+When communicating online:
+
+ * Treat the instructor with respect, even via email or in any other online
+   communication.
+ * Always use your professors’ proper title: Dr. or Prof., or if you are unsure
+   use Mr. or Ms.
+ * Unless specifically invited, don’t refer to a professor by their first name.
+ * Use clear and concise language.
+ * Remember that all college-level communication should have correct spelling
+   and grammar.
+ * Avoid slang terms such as “wassup?” and texting abbreviations such as “u”
+   instead of “you.”
+ * Use standard fonts such as Times New Roman and use a size 12 or 14 point
+   font.
+ * Avoid using the caps lock feature AS IT CAN BE INTERPRETED AS YELLING.
+ * Limit and possibly avoid the use of emoticons like :) .
+ * Be cautious when using humor or sarcasm as tone is sometimes lost in an email
+   or discussion post and your message might be taken seriously or be construed
+   as being offensive.
+ * Be careful with personal information (both yours and others).
+ * Do not send confidential information via email.
+
+EMAIL
+
+When you send an email to your instructor, teaching assistant, or classmates:
+
+ * Use a descriptive subject line.
+ * Be brief.
+ * Avoid attachments unless you are sure your recipients can open them.
+ * Avoid HTML in favor of plain text.
+ * Sign your message with your name and return email address.
+ * Think before you send the email to more than one person. Does everyone really
+   need to see your message?
+ * Be sure you REALLY want everyone to receive your response when you click,
+   “Reply All.”
+ * Be sure that the message author intended for the information to be passed
+   along before you click the “Forward” button.
+
+DISCUSSION BOARDS
+
+When posting on the discussion board in your online class:
+
+ * Check to see if anyone already asked your question and received a reply
+   before posting to the discussion board.
+ * Remember your manners and say please and thank you when asking something of
+   your classmates or instructor.
+ * Be open-minded.
+ * If you ask a question and many people respond, summarize all posts for the
+   benefit of the class.
+ * When posting:
+   * Make posts that are on-topic and within the scope of the course material.
+   * Be sure to read all messages in a thread before replying.
+   * Be as brief as possible while still making a thorough comment.
+   * Don’t repeat someone else’s post without adding something of your own to
+     it.
+   * Take your posts seriously. Review and edit your posts before sending.
+   * Avoid short, generic replies such as, “I agree.” You should include why you
+     agree or add to the previous point.
+   * If you refer to something that was said in an earlier post, quote a few key
+     lines so readers do not have to go back and figure out which post you are
+     referring to.
+   * Always give proper credit when referencing or quoting another source.
+   * If you reply to a classmate’s question make sure your answer is correct,
+     don’t guess.
+   * Always be respectful of others’ opinions even when they differ from your
+     own.
+   * When you disagree with someone, you should express your differing opinion
+     in a respectful, non-critical way.
+   * Do not make personal or insulting remarks.
+   * Do not write anything sarcastic or angry, it always backfires.
+   * Do not type in ALL CAPS, if you do IT WILL LOOK LIKE YOU ARE YELLING.
+
+ZOOM
+
+When attending a Zoom class or meeting:
+
+ * Do not share your Zoom classroom link or password with others.
+ * Even though you may be alone at home, your professor and classmates can see
+   you! While attending class in your pajamas is tempting, remember that wearing
+   clothing is not optional. Dress appropriately.
+ * Your professor and classmates can also see what is behind you, so be aware of
+   your surroundings.
+ * Make sure the background is not distracting or something you would not want
+   your classmates to see.
+   * When in doubt use a virtual background. If you choose to use one, you
+     should test the background out first to make sure your device can support
+     it.
+   * Your background can express your personality, but be sure to avoid using
+     backgrounds that may contain offensive images and language.
+ * Mute is your friend, especially when you are in a location that can be noisy.
+   Don’t leave your microphone open if you don’t have to.
+ * If you want to speak, you can raise your hand (click the “raise hand” button
+   at the center bottom of your screen) and wait to be called upon.
+
+
+ GETTING HELP
+
+TECHNICAL DIFFICULTIES
+
+For help with technical issues or difficulties with Canvas, please contact the
+UF Computing Help Desk at:
+
+ * http://helpdesk.ufl.edu [http://helpdesk.ufl.edu]
+ * 352-392-HELP (4357)
+ * Walk-in: HUB 132
+
+Any requests for make-ups (assignments, exams, etc.) due to technical issues
+should be accompanied by the ticket number received from the UF Computing Help
+Desk when the problem was reported to them. The ticket number will document the
+time and date of the problem. You should email your instructor within 24 hours
+of the technical difficulty if you wish to request a make-up.
+
+ 
+
+HEALTH AND WELLNESS
+
+ * U Matter, We Care: If you or someone you know is in distress, please email
+   umatter@ufl.edu, call 352-392-1575, or visit U Matter We Care
+   [http://umatter.ufl.edu/] to refer or report a concern, and a team member
+   will reach out to the student in distress.
+ * Counseling and Wellness Center: Visit the UF Counseling & Wellness Center
+   [http://counseling.ufl.edu/] website or call 352-392-1575 for information on
+   crisis services and non-crisis services.
+ * Student Health Care Center: Call 352-392-1161 for 24/7 information to help
+   you find the care you need, or visit the UF Student Health Care Center
+   [http://shcc.ufl.edu] website.
+ * University Police Department: Visit the UF Police Department
+   [http://police.ufl.edu/] website or call 352-392-1111 (or 9-1-1 for
+   emergencies).
+ * UF Health Shands Emergency Room/Trauma Center: For immediate medical care in
+   Gainesville, call 352-733-0111, or go to the emergency room at 1515 SW Archer
+   Road, Gainesville, FL 32608; Visit the UF Health Shands Emergency Room/Trauma
+   Center [http://ufhealth.org/emergency-room-trauma-center] website.
+
+
+ ACADEMIC AND STUDENT SUPPORT
+
+ * Career Connections Center: For career assistance and counseling services,
+   visit the UF Career Connections Center [http://career.ufl.edu/] website or
+   call 352-392-1601.
+ * Library Support: For various ways to receive assistance concerning using the
+   libraries or finding resources, visit the UF George A. Smathers Libraries
+   Ask-A-Librarian [https://uflib.ufl.edu/find/ask/] website.
+ * Teaching Center: For general study skills and tutoring, visit the UF Teaching
+   Center [http://teachingcenter.ufl.edu/] website or call 352-392-2010.
+ * Writing Studio: For help with brainstorming, formatting, and writing papers,
+   visit the University Writing Program Writing Studio
+   [http://writing.ufl.edu/writing-studio/] website or call 352-846-1138.
+
+
+ COURSE EVALUATIONS
+
+Students are expected to provide professional and respectful feedback on the
+quality of instruction in this course by completing course evaluations online
+via GatorEvals. Guidance on how to give feedback in a professional and
+respectful manner is available on the GatorEvals Providing Constructive Feedback
+[https://gatorevals.aa.ufl.edu/students/] FAQ page. Students will be notified
+when the evaluation period opens and can complete evaluations through the email
+they receive from GatorEvals, in their Canvas course menu under GatorEvals, or
+via the GatorEvals [https://ufl.bluera.com/ufl/] website. Summaries of course
+evaluation results are available to students at the GatorEvals Public Results
+[https://gatorevals.aa.ufl.edu/public-results] page. More information about UF's
+course evaluation system can be found at the GatorEvals Faculty Evaluations
+[https://gatorevals.aa.ufl.edu/] website.
+
+
+ TIPS FOR SUCCESS
+
+Taking a course online can be a lot of fun! Here are some tips that will help
+you get the most of this course while taking full advantage of the online
+format:
+
+ * Schedule "class times" for yourself. It is important to do the coursework on
+   time each week. You will receive a reduction in points for work that is
+   turned in late!
+ * Read ALL of the material contained on this site. There is a lot of helpful
+   information that can save you time and help you meet the objectives of the
+   course.
+ * Print out the Course Summary located in the Course Syllabus and check things
+   off as you go.
+ * Take full advantage of the online discussion boards. Ask for help or
+   clarification of the material if you need it.
+ * Do not wait to ask questions! Waiting to ask a question might cause you to
+   miss a due date.
+ * Do your work well before the due dates. Sometimes things happen. If your
+   computer goes down when you are trying to submit an assignment, you'll need
+   time to troubleshoot the problem.
+ * To be extra safe, back up your work to an external hard drive, thumb drive,
+   or through a cloud service.
+
+
+ PRIVACY AND ACCESSIBILITY POLICIES
+
+ * Adobe
+    * Adobe Privacy Policy [https://www.adobe.com/privacy/policy.html]
+    * Adobe Accessibility [https://www.adobe.com/accessibility.html]
+
+ * Instructure (Canvas)
+   * Instructure Privacy Policy [https://www.instructure.com/policies/privacy]
+   * Instructure Accessibility
+     [https://www.instructure.com/canvas/accessibility]
+ * Microsoft
+   * Microsoft Privacy Policy
+     [https://privacy.microsoft.com/en-us/privacystatement]
+   * Microsoft Accessibility
+     [https://www.microsoft.com/en-us/accessibility/office?activetab=pivot_1%3aprimaryr2]
+ * YouTube (Google)
+   * YouTube (Google) Privacy Policy [https://policies.google.com/privacy]
+   * YouTube (Google) Accessibility
+     [https://support.google.com/youtube/answer/189278?hl=en]
+
+ * Zoom
+    * Zoom Privacy Policy [https://zoom.us/privacy]
+    * Zoom Accessibility [https://zoom.us/accessibility]
+
+ (Links to an external site.
