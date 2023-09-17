@@ -5,9 +5,10 @@ import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 import painters from "./painters.json";
 import { object } from 'prop-types';
+import logo from './ChatTALogo.png'
 
 function App() {
-  document.title = "NaviGator";
+  document.title = "ChatTA";
   const [painter, setPainter] = useState("")
   const [canvasKey, setCanvasKey] = useState(localStorage.getItem("canvasKey") === null ? "" : localStorage.getItem("canvasKey"));
   const [ids, setIds] = useState({});
@@ -75,7 +76,7 @@ function App() {
     setMessages([
       {
         message: 'Hello, how can I help you?',
-        sender: 'Navigator'
+        sender: 'ChatTA'
       }
     ]);
 
@@ -91,12 +92,11 @@ function App() {
 
   const loadCourseInfo = async (currCourseId) => {
     try {
-      console.log("CANVAS KEY", canvasKey)
-      const response = await axios.post(`http://localhost:3500/loadCourse/`, {
+      setMessages([]);
+      const response = await axios.post(`http://localhost:3500/createDatabase/`, {
         params: {
-          "key": canvasKey,
-          "courseId": currCourseId,
-          "courseName": ids.courseNames[currentCourseIndex]
+          "course_id": currCourseId,
+          "canvas_api_token": canvasKey
         }
       });
       console.log(response.data);
@@ -117,12 +117,25 @@ function App() {
 
     // Update messages state
     setMessages(newMessages);
-
-    // Set typing indicator
+    
     setTyping(true);
+    
+    await axios.get("http://localhost:3500/queryDatabase/", {
+      params: {
+        "course_id": ids.courseIds[currentCourseIndex],
+        "messages": messages
+      }
+    })
 
-    // Send message to backend
-    await processMessage(newMessages);
+    try {
+      // Replace with your Node.js API URL and student token
+      const response = await axios.get("http://localhost:3500/queryDatabase/", {params: {"course_id": ids.courseIds[currentCourseIndex], "messages": messages}});
+      setMessages(response);
+      setTyping(false);
+    } catch (error) {
+      console.error('Error sending query:', error);
+    }
+
   };
 
   async function processMessage(chatMessages) {
@@ -137,7 +150,7 @@ function App() {
 
     const systemMessage = {
       role: 'system',
-      content: 'Your name is Navigator. Explain all concepts like I am a student in this class.'
+      content: 'Your name is ChatTA. Explain all concepts like I am a student in this class.'
     }
 
     const apiRequestBody = {
@@ -156,7 +169,7 @@ function App() {
 
         setMessages([...chatMessages, {
           message: data.data.message,
-          sender: 'NaviGator'
+          sender: 'ChatTA'
         }]);
 
         setTyping(false);
@@ -188,7 +201,10 @@ function App() {
         {loading ? <p>Loading...</p> : <></>}
         {Object.keys(ids).length !== 0 && ids.courseIds.length > 0 ?
           <div>
-            <h1>{`Ask ${painter}, master of the Canvas`}</h1>
+            <div className="painterHeader">
+              <img src={logo} alt="logo" className="logo" width="40px" height="40px" />
+              <h1>{`Ask ${painter}, master of the Canvas`}</h1>
+            </div>
             <select className="classDropdown" onChange={(e) => handleSelectNewCourse(e.target.selectedIndex - 1)}>
               <option selected disabled hidden>Select a course</option>
               {ids.courseNames.map((name) => (
@@ -205,13 +221,13 @@ function App() {
                   <ChatContainer>
                     <MessageList
                       scrollBehavor='smooth'
-                      typingIndicator={typing ? <TypingIndicator content="NaviGator is typing" /> : null}
+                      typingIndicator={typing ? <TypingIndicator content="ChatTA is typing" /> : null}
                     >
                       {messages.map((message, i) => {
                         return <Message key={i} model={message} />
                       })}
                     </MessageList>
-                    <MessageInput placeholder="Ask Navigator..." onSend={handleSend} attachButton={false} />
+                    <MessageInput placeholder="Ask ChatTA..." onSend={handleSend} attachButton={false} />
                   </ChatContainer>
                 </MainContainer>
               </div>

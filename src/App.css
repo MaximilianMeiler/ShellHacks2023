@@ -74,6 +74,11 @@
   font-family: 'Poppins';
 }
 
+.painterHeader {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .classDropdown {
   background-color: rgb(173, 236, 228);
   border-width: 0px;
