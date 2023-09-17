@@ -3,9 +3,12 @@ import { useEffect, useState, Link } from "react";
 import axios from "axios";
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
+import painters from "./painters.json";
+import { object } from 'prop-types';
 
 function App() {
   document.title = "NaviGator";
+  const [painter, setPainter] = useState("")
   const [canvasKey, setCanvasKey] = useState(localStorage.getItem("canvasKey") === null ? "" : localStorage.getItem("canvasKey"));
   const [ids, setIds] = useState({});
   const [loading, setLoading] = useState(false);
@@ -16,6 +19,7 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("canvasKey") && localStorage.getItem("canvasKey").length > 0) {
       fetchCourses();
+      setPainter(painters.painters[Math.floor(Math.random()*19)]);
     }
   }, []);
 
@@ -65,6 +69,8 @@ function App() {
 
   // Processing course selection from dropdown
   const handleSelectNewCourse = async (newCurrentCourseIndex) => {
+    if (object.keys(ids).length === 0) {return;}
+
     // Set messages to empty
     setMessages([
       {
@@ -181,7 +187,7 @@ function App() {
         {loading ? <p>Loading...</p> : <></>}
         {Object.keys(ids).length !== 0 && ids.courseIds.length > 0 ?
           <div>
-            <h1>Canvas Courses</h1>
+            <h1>{`Ask ${painter}, master of the Canvas`}</h1>
             <select className="classDropdown" onChange={(e) => handleSelectNewCourse(e.target.selectedIndex - 1)}>
               <option selected disabled hidden>Select a course</option>
               {ids.courseNames.map((name) => (

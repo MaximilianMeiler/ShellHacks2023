@@ -77,13 +77,12 @@
 .classDropdown {
   background-color: rgb(173, 236, 228);
   border-width: 0px;
-  height: 3vh;
+  height: 4vh;
   width: 60vw;
   border-radius: 1vh;
   max-height: 3vh;
   font-family: 'Poppins';
   text-align: center;
-  margin-bottom: 1vh;
 }
 
 .canvasDisplay { 
