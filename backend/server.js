@@ -49,6 +49,51 @@ app.use(cors());
     ]
 */
 
+async function downloadFile(course_id, url) {
+  const response = await axios({
+    method: 'GET',
+    url: url,
+    responseType: 'stream',
+  });
+
+  const contentType = response.headers['content-type'];
+  let fileType = null;
+  
+  if (contentType === 'application/pdf') {
+    fileType = 'pdf';
+  } else if (contentType === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+    fileType = 'pptx';
+  } else {
+    console.log('Skipping file with unsupported content type:', contentType);
+    return;
+  }
+
+  const contentDisposition = response.headers['content-disposition'];
+  let fileName = 'unknown';
+  
+  if (contentDisposition) {
+    const matches = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+    if (matches && matches.length > 1) {
+      fileName = matches[1].replace(/['"]/g, ''); // Remove quotes
+    }
+  }
+
+  // Ensure the directory exists
+  const dirPath = path.resolve(__dirname, `coursesData/${course_id}`);
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+  
+  const outputPath = path.join(dirPath, `${fileName}.${fileType}`);
+  const writer = fs.createWriteStream(outputPath);
+
+  response.data.pipe(writer);
+
+  return new Promise((resolve, reject) => {
+    writer.on('finish', resolve);
+    writer.on('error', reject);
+  });
+}
 
 // 8. Define a function to normalize the content of the documents
 function normalizeDocuments(docs) {
@@ -145,7 +190,7 @@ app.get('/getSyllabus', async (req, res) => {
 
 app.get('/queryDatabase', async (req, res) => {
   const { course_id, question} = req.query;
-  const VECTOR_STORE_PATH = `coursesData/${course_id}`;
+  const VECTOR_STORE_PATH = `coursesVectorStore/${course_id}`;
 
   try {
     const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
@@ -157,8 +202,9 @@ app.get('/queryDatabase', async (req, res) => {
 
     const template = `You are a helpful Canvas AI guide to an interface for students work with school 
     documents and orgnaizes student info. Use the following pieces of context to answer the question at the end.
-    If you don't know the answer, just say that you don't know, don't try to make up an answer.
-    Be as specfic as possible, use your knowledge source from the vector database, and provide a highly intelligent and detailed 
+    If you don't know the answer, just say that you don't know, don't try to make up an answer. Only use the following information provided to form 
+    your answer, do not use any outside or prior knowledge.
+    Be as specfic as possible, use your knowledge source from the vector database, and provide a highly intelligent yet concise
     response to the query. Provide information specific to the course, do not give general advice, and specfically give information regarding
     the course in hand.
     {context}
@@ -219,17 +265,25 @@ app.get('/createDatabase', async (req, res) => {
         }
       })
 
+    const files = await axios.get("http://localhost:3500/getFiles", {
+        params: {
+          course_id: course_id,
+          canvas_api_token: canvas_api_token
+        }
+      })
     //console.log(modules);
     //console.log(syllabus);
     //res.json("yolo");
     
-    console.log(syllabus.data.syllabus);
+    //console.log(syllabus.data.syllabus);
     
     const syllabusHTML = syllabus.data.syllabus;
     const modulesJsonString = JSON.stringify(modules.data,null,2); 
     
     const directoryPath = path.join(__dirname, `coursesData/${course_id}`);
+    const vectorDatabasePath = path.join(__dirname, `coursesVectorStore/${course_id}`);
     
+
     const syllabusFilePath = path.join(directoryPath, 'syllabus.html');
     const modulesFilePath = path.join(directoryPath, 'modules.json');
     
@@ -240,7 +294,9 @@ app.get('/createDatabase', async (req, res) => {
     if (!fs.existsSync(directoryPath)){
       fs.mkdirSync(directoryPath, { recursive: true });
     }
-
+    if (!fs.existsSync(vectorDatabasePath)){
+      fs.mkdirSync(vectorDatabasePath, { recursive: true });
+    }
     
     // Write the JSON string to a file
     fs.writeFile(syllabusFilePath, syllabusHTML, function(err) {
@@ -251,6 +307,9 @@ app.get('/createDatabase', async (req, res) => {
   });
     fs.writeFileSync(modulesFilePath, modulesJsonString);
     
+    for (const file of files.data.urls) {
+      await downloadFile(course_id, file);
+    }
 
     const loader = new DirectoryLoader(directoryPath, {
       ".json": (path) => new JSONLoader(path),
@@ -260,9 +319,11 @@ app.get('/createDatabase', async (req, res) => {
       ".html": (path) => new UnstructuredLoader(path),
       ".pptx": (path) => new UnstructuredLoader(path)
     });
-    const docs = await loader.load();
 
-    const VECTOR_STORE_PATH = directoryPath;
+    const docs = await loader.load();
+    
+    
+    const VECTOR_STORE_PATH = vectorDatabasePath;
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
     });
@@ -272,7 +333,7 @@ app.get('/createDatabase', async (req, res) => {
 
     vectorStore = await HNSWLib.fromDocuments(
       splitDocs,
-      new OpenAIEmbeddings({openAIApiKey: "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",
+      new OpenAIEmbeddings({openAIApiKey: "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",
       verbose: true // Optional, set to true if you want verbose logging)
   }));
 
@@ -280,6 +341,7 @@ app.get('/createDatabase', async (req, res) => {
    // have to fix the "error" start
     
    res.send('Ma Name is Eron Mux')
+   
   } 
   catch (error) {
     console.error(`Error creating database: ${error}`);
@@ -309,6 +371,27 @@ app.get('/getPages', async (req, res) => {
   }
 });
 
+app.get('/getFiles', async (req, res) => {
+  const courseId = req.query.course_id;
+  const canvas_api_token = req.query.canvas_api_token;
+
+  if (!courseId || !canvas_api_token) {
+    return res.status(400).json({ error: 'courseId and canvas_api_token are required' });
+  }
+
+  try {
+    const response = await axios.get(`${CANVAS_API_URL}/courses/${courseId}/files`, {
+      headers: {
+        'Authorization': `Bearer ${canvas_api_token}`
+      }
+    });
+    const urls = response.data.map(file => file.url);
+    return res.json({ urls });
+  } catch (error) {
+    console.error('Error fetching files:', error);
+    res.status(200).json({ message: "No files available" });
+  }
+});
 
 
 // need to make an api
