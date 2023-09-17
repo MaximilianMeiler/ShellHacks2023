@@ -155,18 +155,19 @@ app.get('/queryDatabase', async (req, res) => {
       verbose: true})
     );
 
-    const template = `Use the following pieces of context to answer the question at the end.
+    const template = `You are a helpful Canvas AI guide to an interface for students work with school 
+    documents and orgnaizes student info. Use the following pieces of context to answer the question at the end.
     If you don't know the answer, just say that you don't know, don't try to make up an answer.
-    You have a one in hundred chance to speak in Pirate lingo, in that case make whatever you want, have fun. 
-    Otherwise, be as specfic as possible, use your knowledge source, and provide a highly intelligent and detailed 
-    response to the query. You are a helpful Canvas AI guide which is an interface for studentsd to work with school 
-    documents and orgnaizes student info. Try to cite your sources, and think before you respond. 
+    Be as specfic as possible, use your knowledge source from the vector database, and provide a highly intelligent and detailed 
+    response to the query. Provide information specific to the course, do not give general advice, and specfically give information regarding
+    the course in hand.
     {context}
     Question: {question}
     Helpful Answer:`;
     
     const chain = RetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
       prompt: PromptTemplate.fromTemplate(template),
+      returnSourceDocuments: true
     });
     
     const response = await chain.call({
@@ -195,7 +196,7 @@ app.get('/createDatabase', async (req, res) => {
   const { course_id, canvas_api_token } = req.query;
 
   if (!course_id || !canvas_api_token) {
-    return res.status(400).json({ error: 'course_id and canvas_api_token are required' });
+    return res.status(400).json({ error: 'courseId and canvas_api_token are required' });
   }
 
   try {
@@ -222,18 +223,18 @@ app.get('/createDatabase', async (req, res) => {
     //console.log(syllabus);
     //res.json("yolo");
     
-  
+    console.log(syllabus.data.syllabus);
     
-    const syllabusJsonString = JSON.stringify(syllabus.data, null, 2);
+    const syllabusHTML = syllabus.data.syllabus;
     const modulesJsonString = JSON.stringify(modules.data,null,2); 
     
     const directoryPath = path.join(__dirname, `coursesData/${course_id}`);
     
-    const syllabusFilePath = path.join(directoryPath, 'syllabus.json');
+    const syllabusFilePath = path.join(directoryPath, 'syllabus.html');
     const modulesFilePath = path.join(directoryPath, 'modules.json');
     
-    console.log(syllabusFilePath);
-    console.log(modulesFilePath);
+    //console.log(syllabusFilePath);
+    //console.log(modulesFilePath);
     
     // Make sure the directory exists, and if not, create it
     if (!fs.existsSync(directoryPath)){
@@ -242,7 +243,12 @@ app.get('/createDatabase', async (req, res) => {
 
     
     // Write the JSON string to a file
-    fs.writeFileSync(syllabusFilePath, syllabusJsonString);
+    fs.writeFile(syllabusFilePath, syllabusHTML, function(err) {
+      if(err) {
+          return console.log(err);
+      }
+      console.log("The HTML file was saved!");
+  });
     fs.writeFileSync(modulesFilePath, modulesJsonString);
     
 
@@ -279,7 +285,7 @@ app.get('/createDatabase', async (req, res) => {
     console.error(`Error creating database: ${error}`);
     res.status(500).json({ error: 'Failed to create database' });
   }
-});
+}); 
 
 
 
@@ -288,11 +294,13 @@ app.get('/createDatabase', async (req, res) => {
 //   -> "/getSyllabus (req,res) (Done)"
 //        -> given courseID
 //        -> return html 
-//   -> "/getModules" 
+//   -> "/getModules (Done)" 
 //   -> "/getPages"
 //   -> "/getFiles"
+//   -> "/assignments"
 //        -> return url
 //        -> turn url into pdf
+//   -> "/rubrics"
 //      
 //  -> "/createCourseDatabase(req,res)"
 //       -> first grab syallbus, modules,dpages, and files
