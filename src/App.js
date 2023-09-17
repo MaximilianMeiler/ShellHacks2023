@@ -92,12 +92,11 @@ function App() {
 
   const loadCourseInfo = async (currCourseId) => {
     try {
-      console.log("CANVAS KEY", canvasKey)
-      const response = await axios.post(`http://localhost:3500/loadCourse/`, {
+      setMessages([]);
+      const response = await axios.post(`http://localhost:3500/createDatabase/`, {
         params: {
-          "key": canvasKey,
-          "courseId": currCourseId,
-          "courseName": ids.courseNames[currentCourseIndex]
+          "course_id": currCourseId,
+          "canvas_api_token": canvasKey
         }
       });
       console.log(response.data);
@@ -118,12 +117,25 @@ function App() {
 
     // Update messages state
     setMessages(newMessages);
-
-    // Set typing indicator
+    
     setTyping(true);
+    
+    await axios.get("http://localhost:3500/queryDatabase/", {
+      params: {
+        "course_id": ids.courseIds[currentCourseIndex],
+        "messages": messages
+      }
+    })
 
-    // Send message to backend
-    await processMessage(newMessages);
+    try {
+      // Replace with your Node.js API URL and student token
+      const response = await axios.get("http://localhost:3500/queryDatabase/", {params: {"course_id": ids.courseIds[currentCourseIndex], "messages": messages}});
+      setMessages(response);
+      setTyping(false);
+    } catch (error) {
+      console.error('Error sending query:', error);
+    }
+
   };
 
   async function processMessage(chatMessages) {
