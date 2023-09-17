@@ -285,7 +285,29 @@ app.get('/createDatabase', async (req, res) => {
     console.error(`Error creating database: ${error}`);
     res.status(500).json({ error: 'Failed to create database' });
   }
-}); 
+});
+
+app.get('/getPages', async (req, res) => {
+  const courseId = req.query.courseId;
+  const canvas_api_token = req.query.canvas_api_token;
+
+  if (!courseId || !canvas_api_token) {
+    return res.status(400).json({ error: 'courseId and canvas_api_token are required' });
+  }
+
+  try {
+    const response = await axios.get(`${CANVAS_API_URL}/courses/${courseId}/pages?include[]=body`, {
+      headers: {
+        'Authorization': `Bearer ${canvas_api_token}`
+      }
+    });
+    const data = response.data.map(page => page.body);
+    return res.json({data});
+  } catch (error) {
+    console.error('Error fetching pages:', error);
+    res.status(200).json({ message: "No pages available" });
+  }
+});
 
 
 

@@ -69,7 +69,7 @@ function App() {
 
   // Processing course selection from dropdown
   const handleSelectNewCourse = async (newCurrentCourseIndex) => {
-    if (object.keys(ids).length === 0) {return;}
+    if (Object.keys(ids).length === 0) {return;}
 
     // Set messages to empty
     setMessages([
@@ -91,6 +91,7 @@ function App() {
 
   const loadCourseInfo = async (currCourseId) => {
     try {
+      console.log("CANVAS KEY", canvasKey)
       const response = await axios.post(`http://localhost:3500/loadCourse/`, {
         params: {
           "key": canvasKey,
