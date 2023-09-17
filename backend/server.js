@@ -196,8 +196,13 @@ app.get('/queryDatabase', async (req, res) => {
   const { course_id, messages} = req.query;
   const VECTOR_STORE_PATH = `coursesVectorStore/${course_id}`;
 
+  console.log(typeof messages)
+  const messagesArray = JSON.parse(messages);
+  console.log(typeof messagesArray);
+  console.log(messagesArray);
+  
   try {
-    const pastMessages = messages.map((msg) => {
+    const pastMessages = messagesArray.map((msg) => {
       if (msg.sender === "user") {
         return new HumanMessage(msg.message);
       } else {
@@ -243,7 +248,7 @@ app.get('/queryDatabase', async (req, res) => {
     });
       
     const newMessages = [
-      ...messages,
+      ...messagesArray,
       { message: response, sender: "assistant", direction: "incoming" }
     ];
 
