@@ -27,12 +27,16 @@ const { CSVLoader } = require("langchain/document_loaders/fs/csv");
 const { PDFLoader } = require("langchain/document_loaders/fs/pdf");
 const { UnstructuredLoader }  = require("langchain/document_loaders/fs/unstructured");
 const { PromptTemplate } = require("langchain/prompts");
+const { ConversationalRetrievalQAChain } = require("langchain/chains");
+const { BufferMemory } = require("langchain/memory");
 
-
+const { ChatMessageHistory } = require("langchain/memory");
+const { constants } = require("buffer");
+const { HumanMessage, AIMessage } = require("langchain/schema");  
 const CANVAS_API_URL = 'https://canvas.instructure.com/api/v1';
 app.use(cors());
 
-
+let vectorStore;
 //(Test): This is just for grabbing the current classes 
 /*
   Example Courses:
@@ -189,10 +193,21 @@ app.get('/getSyllabus', async (req, res) => {
 }); 
 
 app.get('/queryDatabase', async (req, res) => {
-  const { course_id, question} = req.query;
+  const { course_id, messages} = req.query;
   const VECTOR_STORE_PATH = `coursesVectorStore/${course_id}`;
 
   try {
+    const pastMessages = messages.map((msg) => {
+      if (msg.sender === "user") {
+        return new HumanMessage(msg.message);
+      } else {
+        return new AIMessage(msg.message);
+      }
+    });
+    const memory = new BufferMemory({
+      chatHistory: new ChatMessageHistory(pastMessages),
+    });
+
     const model = new ChatOpenAI({ modelName: "gpt-3.5-turbo",openAIApiKey: "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"});
     vectorStore = await HNSWLib.load(
       VECTOR_STORE_PATH,
@@ -211,23 +226,31 @@ app.get('/queryDatabase', async (req, res) => {
     Question: {question}
     Helpful Answer:`;
     
+    /*
     const chain = RetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
       prompt: PromptTemplate.fromTemplate(template),
       returnSourceDocuments: true
     });
-    
+    */
+    const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
+      prompt: PromptTemplate.fromTemplate(template),
+      returnSourceDocuments: true,
+      memory
+    });
+
     const response = await chain.call({
-      query: `${question}`
+      query: `${messages[messages.length-1].message}`
     });
       
+    const newMessages = [
+      ...messages,
+      { message: response, sender: "assistant", direction: "incoming" }
+    ];
 
       console.log(response);
       // res.send("My name is Jeff Bezos"); // Don't use res.send() here if you plan to use res.json() later
 
-      res.status(200).json({
-          success: true,
-          message: "We are chilling"
-      });
+      res.status(200).json({newMessages})
 
   } catch (error) {
       console.error("Error:", error);
@@ -311,13 +334,16 @@ app.get('/createDatabase', async (req, res) => {
       await downloadFile(course_id, file);
     }
 
+    const options = {
+      apiKey: "yPnRhsNp8sYzmjJ2aL4JFiaPqo8T1G",
+    };
     const loader = new DirectoryLoader(directoryPath, {
       ".json": (path) => new JSONLoader(path),
       ".txt": (path) => new TextLoader(path),
       ".csv": (path) => new CSVLoader(path),
       ".pdf": (path) => new PDFLoader(path),
-      ".html": (path) => new UnstructuredLoader(path),
-      ".pptx": (path) => new UnstructuredLoader(path)
+      ".html": (path) => new UnstructuredLoader(path,options),
+      ".pptx": (path) => new UnstructuredLoader(path,options)
     });
 
     const docs = await loader.load();
