@@ -220,7 +220,7 @@ function App() {
                 <MainContainer >
                   <ChatContainer>
                     <MessageList
-                      scrollBehavor='smooth'
+                      scrollBehavior='smooth'
                       typingIndicator={typing ? <TypingIndicator content="gpTA is typing" /> : null}
                     >
                       <Message key={0} model={{
